@@ -31,9 +31,9 @@ export function AppShowcase() {
           <div className="flex items-center gap-3">
             {/* Color Window Controls (Red, Yellow, Green) */}
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-[#ff5f56] border border-[#e0443e]/80 shadow-sm" title="Close" />
-              <div className="w-3 h-3 rounded-full bg-[#ffbd2e] border border-[#dea123]/80 shadow-sm" title="Minimize" />
-              <div className="w-3 h-3 rounded-full bg-[#27c93f] border border-[#1aab29]/80 shadow-sm" title="Maximize" />
+              <div className="w-3 h-3 rounded-full bg-[#ff5f56] border border-[#e0443e] shadow-sm" title="Close" />
+              <div className="w-3 h-3 rounded-full bg-[#ffbd2e] border border-[#dea123] shadow-sm" title="Minimize" />
+              <div className="w-3 h-3 rounded-full bg-[#27c93f] border border-[#1aab29] shadow-sm" title="Maximize" />
             </div>
             <Separator orientation="vertical" className="h-3.5" />
             <div className="flex items-center gap-1.5 font-mono text-xs text-muted-foreground">
@@ -82,184 +82,186 @@ export function AppShowcase() {
             </div>
           </div>
 
-          {/* TAB 1: Split View (Compacto e sem vácuo desnecessário) */}
+          {/* TAB 1: Split View (Rigorosamente limitado a 460px com min-h-0) */}
           <TabsContent value="split" className="m-0 focus-visible:outline-none">
-            <div className="grid grid-cols-1 lg:grid-cols-12 h-[410px]">
+            <div className="grid grid-cols-1 lg:grid-cols-12 h-[460px] max-h-[460px] min-h-0 overflow-hidden">
               
-              {/* Left Column: DBML Editor com Numeração de Linhas Real */}
-              <div className="lg:col-span-5 p-2.5 font-mono text-xs border-b lg:border-b-0 lg:border-r border-border bg-muted/10 overflow-y-auto leading-relaxed select-text flex">
-                
-                {/* Line numbers column */}
-                <div className="w-6 flex-shrink-0 select-none text-[11px] text-muted-foreground/40 text-right pr-2 space-y-0.5 border-r border-border/30">
-                  {Array.from({ length: 47 }, (_, i) => (
-                    <div key={i + 1}>{i + 1}</div>
-                  ))}
-                </div>
-
-                {/* DBML Code content */}
-                <div className="pl-2.5 space-y-0.5 text-[11px] flex-1">
-                  <div className="text-muted-foreground/60">// Exemplo: e-commerce simples</div>
-                  <div>
-                    <span className="text-blue-500 font-semibold">Table</span>{" "}
-                    <span className="text-purple-400 font-semibold">users</span>{" "}
-                    <span className="text-muted-foreground/80">[headercolor: #8b5cf6]</span> {"{"}
-                  </div>
-                  <div className="pl-3.5">
-                    <span className="text-foreground">id</span>{" "}
-                    <span className="text-purple-400">int</span>{" "}
-                    <span className="text-sky-400">[pk]</span>
-                  </div>
-                  <div className="pl-3.5">
-                    <span className="text-foreground">email</span>{" "}
-                    <span className="text-purple-400">varchar(255)</span>{" "}
-                    <span className="text-sky-400">[unique, not null]</span>
-                  </div>
-                  <div className="pl-3.5">
-                    <span className="text-foreground">name</span>{" "}
-                    <span className="text-purple-400">text</span>
-                  </div>
-                  <div className="pl-3.5">
-                    <span className="text-foreground">created_at</span>{" "}
-                    <span className="text-purple-400">timestamp</span>
-                  </div>
-                  <div>{"}"}</div>
-
-                  <div className="h-1" />
-                  <div>
-                    <span className="text-blue-500 font-semibold">Table</span>{" "}
-                    <span className="text-purple-400 font-semibold">products</span> {"{"}
-                  </div>
-                  <div className="pl-3.5">
-                    <span className="text-foreground">id</span>{" "}
-                    <span className="text-purple-400">int</span>{" "}
-                    <span className="text-sky-400">[pk]</span>
-                  </div>
-                  <div className="pl-3.5">
-                    <span className="text-foreground">title</span>{" "}
-                    <span className="text-purple-400">varchar(200)</span>{" "}
-                    <span className="text-sky-400">[not null]</span>
-                  </div>
-                  <div className="pl-3.5">
-                    <span className="text-foreground">price</span>{" "}
-                    <span className="text-purple-400">decimal(10,2)</span>
-                  </div>
-                  <div className="pl-3.5">
-                    <span className="text-foreground">stock</span>{" "}
-                    <span className="text-purple-400">int</span>
-                  </div>
-                  <div>{"}"}</div>
-
-                  <div className="h-1" />
-                  <div>
-                    <span className="text-blue-500 font-semibold">Table</span>{" "}
-                    <span className="text-purple-400 font-semibold">orders</span> {"{"}
-                  </div>
-                  <div className="pl-3.5">
-                    <span className="text-foreground">id</span>{" "}
-                    <span className="text-purple-400">int</span>{" "}
-                    <span className="text-sky-400">[pk]</span>
-                  </div>
-                  <div className="pl-3.5">
-                    <span className="text-foreground">user_id</span>{" "}
-                    <span className="text-purple-400">int</span>{" "}
-                    <span className="text-sky-400">[ref: &gt; users.id, not null]</span>
-                  </div>
-                  <div className="pl-3.5">
-                    <span className="text-foreground">status</span>{" "}
-                    <span className="text-purple-400">varchar(20)</span>
-                  </div>
-                  <div className="pl-3.5">
-                    <span className="text-foreground">placed_at</span>{" "}
-                    <span className="text-purple-400">timestamp</span>
-                  </div>
-                  <div>{"}"}</div>
-
-                  <div className="h-1" />
-                  <div>
-                    <span className="text-blue-500 font-semibold">Table</span>{" "}
-                    <span className="text-purple-400 font-semibold">order_items</span> {"{"}
-                  </div>
-                  <div className="pl-3.5">
-                    <span className="text-foreground">id</span>{" "}
-                    <span className="text-purple-400">int</span>{" "}
-                    <span className="text-sky-400">[pk]</span>
-                  </div>
-                  <div className="pl-3.5">
-                    <span className="text-foreground">order_id</span>{" "}
-                    <span className="text-purple-400">int</span>{" "}
-                    <span className="text-sky-400">[ref: &gt; orders.id]</span>
-                  </div>
-                  <div className="pl-3.5">
-                    <span className="text-foreground">product_id</span>{" "}
-                    <span className="text-purple-400">int</span>{" "}
-                    <span className="text-sky-400">[ref: &gt; products.id]</span>
-                  </div>
-                  <div className="pl-3.5">
-                    <span className="text-foreground">quantity</span>{" "}
-                    <span className="text-purple-400">int</span>
-                  </div>
-                  <div>{"}"}</div>
-
-                  <div className="h-1" />
-                  <div>
-                    <span className="text-blue-500 font-semibold">Table</span>{" "}
-                    <span className="text-purple-400 font-semibold">reviews</span> {"{"}
-                  </div>
-                  <div className="pl-3.5">
-                    <span className="text-foreground">id</span>{" "}
-                    <span className="text-purple-400">int</span>{" "}
-                    <span className="text-sky-400">[pk]</span>
-                  </div>
-                  <div className="pl-3.5">
-                    <span className="text-foreground">product_id</span>{" "}
-                    <span className="text-purple-400">int</span>
-                  </div>
-                  <div className="pl-3.5">
-                    <span className="text-foreground">user_id</span>{" "}
-                    <span className="text-purple-400">int</span>
-                  </div>
-                  <div className="pl-3.5">
-                    <span className="text-foreground">rating</span>{" "}
-                    <span className="text-purple-400">int</span>
-                  </div>
-                  <div>{"}"}</div>
-
-                  <div className="h-1" />
-                  <div>
-                    <span className="text-blue-500 font-semibold">Ref:</span>{" "}
-                    <span className="text-foreground">reviews.product_id &gt; products.id</span>
-                  </div>
-                  <div>
-                    <span className="text-blue-500 font-semibold">Ref:</span>{" "}
-                    <span className="text-foreground">reviews.user_id &gt; users.id</span>
+              {/* Left Column: DBML Editor com Scrollbar Independente */}
+              <div className="lg:col-span-5 h-[460px] min-h-0 flex flex-col border-b lg:border-b-0 lg:border-r border-border bg-muted/10">
+                <div className="flex-1 min-h-0 overflow-y-auto p-2.5 font-mono text-xs leading-relaxed select-text flex">
+                  
+                  {/* Line numbers column */}
+                  <div className="w-6 flex-shrink-0 select-none text-[11px] text-muted-foreground/40 text-right pr-2 space-y-0.5 border-r border-border/30">
+                    {Array.from({ length: 47 }, (_, i) => (
+                      <div key={i + 1}>{i + 1}</div>
+                    ))}
                   </div>
 
-                  <div className="h-1" />
-                  <div>
-                    <span className="text-blue-500 font-semibold">TableGroup</span>{" "}
-                    <span className="text-foreground">vendas</span>{" "}
-                    <span className="text-muted-foreground/80">[color: #3b82f6]</span> {"{"}
-                  </div>
-                  <div className="pl-3.5 text-foreground">orders</div>
-                  <div className="pl-3.5 text-foreground">order_items</div>
-                  <div>{"}"}</div>
+                  {/* DBML Code content */}
+                  <div className="pl-2.5 space-y-0.5 text-[11px] flex-1">
+                    <div className="text-muted-foreground/60">// Exemplo: e-commerce simples</div>
+                    <div>
+                      <span className="text-blue-500 font-semibold">Table</span>{" "}
+                      <span className="text-purple-400 font-semibold">users</span>{" "}
+                      <span className="text-muted-foreground/80">[headercolor: #8b5cf6]</span> {"{"}
+                    </div>
+                    <div className="pl-3.5">
+                      <span className="text-foreground">id</span>{" "}
+                      <span className="text-purple-400">int</span>{" "}
+                      <span className="text-sky-400">[pk]</span>
+                    </div>
+                    <div className="pl-3.5">
+                      <span className="text-foreground">email</span>{" "}
+                      <span className="text-purple-400">varchar(255)</span>{" "}
+                      <span className="text-sky-400">[unique, not null]</span>
+                    </div>
+                    <div className="pl-3.5">
+                      <span className="text-foreground">name</span>{" "}
+                      <span className="text-purple-400">text</span>
+                    </div>
+                    <div className="pl-3.5">
+                      <span className="text-foreground">created_at</span>{" "}
+                      <span className="text-purple-400">timestamp</span>
+                    </div>
+                    <div>{"}"}</div>
 
-                  <div className="h-1" />
-                  <div>
-                    <span className="text-blue-500 font-semibold">TableGroup</span>{" "}
-                    <span className="text-foreground">catalogo</span>{" "}
-                    <span className="text-muted-foreground/80">[color: #22c55e]</span> {"{"}
+                    <div className="h-1" />
+                    <div>
+                      <span className="text-blue-500 font-semibold">Table</span>{" "}
+                      <span className="text-purple-400 font-semibold">products</span> {"{"}
+                    </div>
+                    <div className="pl-3.5">
+                      <span className="text-foreground">id</span>{" "}
+                      <span className="text-purple-400">int</span>{" "}
+                      <span className="text-sky-400">[pk]</span>
+                    </div>
+                    <div className="pl-3.5">
+                      <span className="text-foreground">title</span>{" "}
+                      <span className="text-purple-400">varchar(200)</span>{" "}
+                      <span className="text-sky-400">[not null]</span>
+                    </div>
+                    <div className="pl-3.5">
+                      <span className="text-foreground">price</span>{" "}
+                      <span className="text-purple-400">decimal(10,2)</span>
+                    </div>
+                    <div className="pl-3.5">
+                      <span className="text-foreground">stock</span>{" "}
+                      <span className="text-purple-400">int</span>
+                    </div>
+                    <div>{"}"}</div>
+
+                    <div className="h-1" />
+                    <div>
+                      <span className="text-blue-500 font-semibold">Table</span>{" "}
+                      <span className="text-purple-400 font-semibold">orders</span> {"{"}
+                    </div>
+                    <div className="pl-3.5">
+                      <span className="text-foreground">id</span>{" "}
+                      <span className="text-purple-400">int</span>{" "}
+                      <span className="text-sky-400">[pk]</span>
+                    </div>
+                    <div className="pl-3.5">
+                      <span className="text-foreground">user_id</span>{" "}
+                      <span className="text-purple-400">int</span>{" "}
+                      <span className="text-sky-400">[ref: &gt; users.id, not null]</span>
+                    </div>
+                    <div className="pl-3.5">
+                      <span className="text-foreground">status</span>{" "}
+                      <span className="text-purple-400">varchar(20)</span>
+                    </div>
+                    <div className="pl-3.5">
+                      <span className="text-foreground">placed_at</span>{" "}
+                      <span className="text-purple-400">timestamp</span>
+                    </div>
+                    <div>{"}"}</div>
+
+                    <div className="h-1" />
+                    <div>
+                      <span className="text-blue-500 font-semibold">Table</span>{" "}
+                      <span className="text-purple-400 font-semibold">order_items</span> {"{"}
+                    </div>
+                    <div className="pl-3.5">
+                      <span className="text-foreground">id</span>{" "}
+                      <span className="text-purple-400">int</span>{" "}
+                      <span className="text-sky-400">[pk]</span>
+                    </div>
+                    <div className="pl-3.5">
+                      <span className="text-foreground">order_id</span>{" "}
+                      <span className="text-purple-400">int</span>{" "}
+                      <span className="text-sky-400">[ref: &gt; orders.id]</span>
+                    </div>
+                    <div className="pl-3.5">
+                      <span className="text-foreground">product_id</span>{" "}
+                      <span className="text-purple-400">int</span>{" "}
+                      <span className="text-sky-400">[ref: &gt; products.id]</span>
+                    </div>
+                    <div className="pl-3.5">
+                      <span className="text-foreground">quantity</span>{" "}
+                      <span className="text-purple-400">int</span>
+                    </div>
+                    <div>{"}"}</div>
+
+                    <div className="h-1" />
+                    <div>
+                      <span className="text-blue-500 font-semibold">Table</span>{" "}
+                      <span className="text-purple-400 font-semibold">reviews</span> {"{"}
+                    </div>
+                    <div className="pl-3.5">
+                      <span className="text-foreground">id</span>{" "}
+                      <span className="text-purple-400">int</span>{" "}
+                      <span className="text-sky-400">[pk]</span>
+                    </div>
+                    <div className="pl-3.5">
+                      <span className="text-foreground">product_id</span>{" "}
+                      <span className="text-purple-400">int</span>
+                    </div>
+                    <div className="pl-3.5">
+                      <span className="text-foreground">user_id</span>{" "}
+                      <span className="text-purple-400">int</span>
+                    </div>
+                    <div className="pl-3.5">
+                      <span className="text-foreground">rating</span>{" "}
+                      <span className="text-purple-400">int</span>
+                    </div>
+                    <div>{"}"}</div>
+
+                    <div className="h-1" />
+                    <div>
+                      <span className="text-blue-500 font-semibold">Ref:</span>{" "}
+                      <span className="text-foreground">reviews.product_id &gt; products.id</span>
+                    </div>
+                    <div>
+                      <span className="text-blue-500 font-semibold">Ref:</span>{" "}
+                      <span className="text-foreground">reviews.user_id &gt; users.id</span>
+                    </div>
+
+                    <div className="h-1" />
+                    <div>
+                      <span className="text-blue-500 font-semibold">TableGroup</span>{" "}
+                      <span className="text-foreground">vendas</span>{" "}
+                      <span className="text-muted-foreground/80">[color: #3b82f6]</span> {"{"}
+                    </div>
+                    <div className="pl-3.5 text-foreground">orders</div>
+                    <div className="pl-3.5 text-foreground">order_items</div>
+                    <div>{"}"}</div>
+
+                    <div className="h-1" />
+                    <div>
+                      <span className="text-blue-500 font-semibold">TableGroup</span>{" "}
+                      <span className="text-foreground">catalogo</span>{" "}
+                      <span className="text-muted-foreground/80">[color: #22c55e]</span> {"{"}
+                    </div>
+                    <div className="pl-3.5 text-foreground">products</div>
+                    <div className="pl-3.5 text-foreground">reviews</div>
+                    <div>{"}"}</div>
                   </div>
-                  <div className="pl-3.5 text-foreground">products</div>
-                  <div className="pl-3.5 text-foreground">reviews</div>
-                  <div>{"}"}</div>
                 </div>
               </div>
 
-              {/* Right Column: Visual Interactive Canvas bem proporcional */}
-              <div className="lg:col-span-7 p-3 sm:p-4 flex flex-col justify-between relative bg-muted/10 overflow-hidden select-none">
+              {/* Right Column: Visual Canvas (Preenchido perfeitamente nos 460px) */}
+              <div className="lg:col-span-7 h-[460px] min-h-0 flex flex-col justify-between p-3.5 relative bg-muted/10 overflow-hidden select-none">
                 
-                {/* Canvas Diagram Container */}
+                {/* Canvas Diagram Container (Centralizado e proporcional) */}
                 <div className="relative my-auto w-full">
                   
                   {/* Conexões ortogonais SVG precisas */}
@@ -451,7 +453,7 @@ export function AppShowcase() {
                   </div>
 
                   {/* Bottom Row: Tabela users */}
-                  <div className="mt-3 flex justify-start relative z-20">
+                  <div className="mt-2.5 flex justify-start relative z-20">
                     <div 
                       onClick={() => setSelectedTable("users")}
                       className={`w-full sm:w-[210px] rounded border bg-card p-1.5 text-[10px] font-mono transition-all cursor-pointer shadow-sm ${
@@ -487,7 +489,7 @@ export function AppShowcase() {
 
                 </div>
 
-                {/* Canvas Floating Toolbar com Controles Reais do DB Modeling */}
+                {/* Canvas Floating Toolbar */}
                 <div className="flex items-center justify-between pt-1.5 border-t border-border/50 text-[11px] font-mono text-muted-foreground">
                   <div className="flex items-center gap-2">
                     <span className="text-emerald-500 font-bold">&bull; 5 tables</span>
@@ -532,7 +534,7 @@ export function AppShowcase() {
           </TabsContent>
 
           {/* TAB 2: Visual Canvas Full */}
-          <TabsContent value="canvas" className="m-0 p-8 h-[410px] flex flex-col items-center justify-center bg-muted/10 focus-visible:outline-none">
+          <TabsContent value="canvas" className="m-0 p-8 h-[460px] flex flex-col items-center justify-center bg-muted/10 focus-visible:outline-none">
             <div className="text-center max-w-md space-y-3">
               <Badge variant="tech">GPU Accelerated Canvas</Badge>
               <h3 className="text-base font-bold text-foreground">Hardware Accelerated Pan & Zoom</h3>
@@ -543,7 +545,7 @@ export function AppShowcase() {
           </TabsContent>
 
           {/* TAB 3: DBML Source Full */}
-          <TabsContent value="dbml" className="m-0 p-5 h-[410px] font-mono text-xs bg-muted/10 overflow-y-auto focus-visible:outline-none">
+          <TabsContent value="dbml" className="m-0 p-5 h-[460px] font-mono text-xs bg-muted/10 overflow-y-auto focus-visible:outline-none">
             <div className="max-w-2xl mx-auto space-y-2 text-left">
               <div className="text-muted-foreground">// Complete Lossless DBML Document (exemplo.dbml)</div>
               <div className="p-3.5 rounded border border-border bg-card leading-relaxed">
@@ -602,7 +604,7 @@ TableGroup catalogo [color: #22c55e] {
           </TabsContent>
 
           {/* TAB 4: GPU Telemetry */}
-          <TabsContent value="telemetry" className="m-0 p-6 h-[410px] flex flex-col justify-center items-center bg-muted/10 focus-visible:outline-none">
+          <TabsContent value="telemetry" className="m-0 p-6 h-[460px] flex flex-col justify-center items-center bg-muted/10 focus-visible:outline-none">
             <div className="max-w-md w-full p-5 rounded-lg border border-border bg-card shadow-sm font-mono text-xs space-y-4 text-left">
               <div className="flex items-center justify-between border-b border-border pb-3">
                 <span className="text-foreground font-semibold">Engine Pipeline</span>
