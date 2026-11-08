@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Modo Claro: Zed Light / Titânio Suave */
+    --background: 210 20% 98%;          /* #f8fafc */
+    --foreground: 222 47% 11%;          /* #0f172a */
+    --card: 0 0% 100%;                  /* #ffffff */
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 222 47% 11%;             /* #0f172a */
+    --primary-foreground: 210 20% 98%;
+    --secondary: 210 16% 93%;           /* #eef2f6 */
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 16% 93%;
+    --muted-foreground: 215 16% 40%;    /* Ratio 5.2:1 com o background */
+    --accent: 210 16% 90%;
+    --accent-foreground: 222 47% 11%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 20% 98%;
+    --border: 214 20% 88%;              /* Micro-borda de 1px */
+    --input: 214 20% 88%;
+    --ring: 222 47% 11%;
+    --radius: 0.375rem;                 /* 6px - Cantos de precisão Zed */
+  }
+
+  .dark {
+    /* Modo Escuro: Zed Dark Grafite Profundo */
+    --background: 220 14% 5.5%;         /* #0c0e10 */
+    --foreground: 0 0% 93%;             /* #ededed */
+    --card: 220 14% 8%;                 /* #121518 */
+    --card-foreground: 0 0% 93%;
+    --popover: 220 14% 10%;             /* #16191d */
+    --popover-foreground: 0 0% 93%;
+    --primary: 0 0% 98%;                /* #fafafa */
+    --primary-foreground: 222 47% 11%;
+    --secondary: 220 12% 13%;           /* #1e2227 */
+    --secondary-foreground: 0 0% 98%;
+    --muted: 220 12% 14%;
+    --muted-foreground: 215 14% 60%;    /* #94a3b8 - Ratio 6.1:1 com #0c0e10 */
+    --accent: 220 12% 16%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 216 11% 16%;              /* #22262b */
+    --input: 216 11% 16%;
+    --ring: 212 96% 78%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection {
+    @apply bg-foreground text-background;
+  }
+}
+
+/* Custom Scrollbars refinadas */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground));
+}
