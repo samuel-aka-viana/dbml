@@ -118,9 +118,9 @@ Typography and color act as surgical instruments rather than decoration. Section
 
 **Key Characteristics:**
 - **Exposed 1px Architectural Ledger:** Full-height vertical container boundaries (`max-w-6xl border-x`) intersected by horizontal `1px` rules and asymmetric two-column splits.
-- **Mixed-Weight Editorial Headlines:** Single-sentence headlines pairing `font-light` muted slate setup phrases with `font-bold` deep carbon punchlines (`Which **diagram edit** polluted my schema?`, `Watch a schema **patch in place**`, `The same workbench, **for real**`).
+- **Mixed-Weight Editorial Headlines:** Single-sentence headlines pairing `font-light` muted slate setup phrases with `font-bold` deep carbon punchlines (`Which **diagram edit** polluted my schema?`, `One visual workbench, **synchronized in real time**`, `The same workbench, **for real**`).
 - **1:1 Workbench Replica:** Embeds an interactive replica of the shared `db_modeling` workbench (Topbar with `sample.dbml` tab + `Ctrl+K`, Left Schema Explorer with `TABLES` & `RELATIONS`, Collapsible `sample.dbml` Editor `Ctrl+E`, Center Dot-Grid Canvas with the Floating 6-Tool Pill, and Right Inspector `Ctrl+I` with the 8-color `SetTableColor` picker).
-- **ASCII & Millimeter-Grid Materiality:** Monospace character-matrix fields (`DBMLROWANCSTDBMLEDIT...`) in the hero and `24px` millimeter-grid backdrops behind the `TextPatch` radar and ER canvas.
+- **Animated ASCII & Millimeter-Grid Materiality:** A full-bleed `<canvas>` animated monospace character-matrix field (`DBMLROWANCSTSYNCSCHEMALAYOUTGPUIWASM`) in the hero and `24px` millimeter-grid backdrops behind the ER canvas.
 - **Surgical Signal Crimson:** High-contrast crimson (`#b91c1c` ink, `#df2020` trace, `#fef2f2` blush fill) used exclusively to mark minimal byte patches, dirty AST rewrite comparisons, and primary resolutions.
 
 ## Colors
@@ -178,9 +178,9 @@ The palette pairs warm, glare-free technical paper neutrals with a surgical Sign
 The entire application is governed by a continuous `1px` architectural grid container (`max-w-6xl` / `1152px`, centered with `mx-auto`, bounded by `border-x border-border`). Sections stack vertically with zero outer margin gaps; full-width `1px` horizontal hairlines (`border-b border-border`) divide the page into five structural bands:
 
 1. **Sticky Specification Header (`48px` height):** Full-width bottom-bordered bar housing the section index menu, official `mark.svg` two-table icon, tracked uppercase monospace brand (`DB-MODELING`), theme toggle, pill search input (`Ctrl+K`), and GitHub release counter (`v0.1.2`).
-2. **Hero Band (`12-column` grid):** A 5-column left proposition stack (`pt-12 pb-16 px-10`) over a subtle `bg-background/90` mask, paired with a 7-column right `TextPatch · crates/dbml-wasm` / `sample.dbml` inspector card, resting over a perimeter ASCII character-matrix field.
+2. **Hero Band:** A focused left proposition stack (`max-w-xl`, `pt-14 pb-16 sm:pt-20 sm:pb-24 px-6 sm:px-10`) featuring the `db-modeling` title, multi-target description (Native Desktop GPUI, Interactive Web CLI, VS Code Extension), and single-row pill CTAs resting over a full-bleed animated `<canvas>` ASCII character-matrix field (`AsciiMatrixCanvas`).
 3. **Problem Split Band (`12-column` grid, `6/6` split):** Preceded by a full-width `■ The problem` structural bar, splitting the viewport into a left editorial question cell (`border-r`) and a right 4-step manual workflow list (`divide-y`) anchored by a full-bleed Signal Blush resolution bar.
-4. **Live Workbench & Patch Radar Band:** A centered mixed-weight header cell followed by a full-width control strip (`+ Inject Command`), a `185px`-tall SVG millimeter-grid byte-patch comparison chart, and a `12-column` 4-pane replica of the `db_modeling` workbench (2-col Schema Explorer Sidebar, 3-col collapsible `sample.dbml` Editor, 5-col interactive Dot-Grid Canvas with Floating 6-Tool Pill, and 2-col Right Inspector).
+4. **Live 1:1 Workbench Band:** A centered mixed-weight header cell (`One visual workbench, **synchronized in real time**`) followed directly by a `12-column` 4-pane replica of the `db_modeling` workbench (2-col Schema Explorer Sidebar, 3-col collapsible `sample.dbml` Editor, 5-col interactive Dot-Grid Canvas with Floating 6-Tool Pill, and 2-col Right Inspector).
 5. **Multi-Target & Workspace Ledger Bands:** Asymmetric two-column ledgers (`6/6` for the 3 execution targets + ASCII architecture diagram, and `5/7` for the 2×4 Rust & WebAssembly workspace matrix) where cells meet edge-to-edge along `1px` rules (`divide-y`, `sm:border-r`).
 
 ## Elevation & Depth

@@ -28,53 +28,33 @@ const TABLE_COLORS = [
 
 interface PatchScenario {
   id: string;
-  commandLabel: string;
   table: "orders" | "users" | "reviews" | "products" | "order_items";
-  byteRange: string;
-  patchBytes: string;
-  fullFileBytes: string;
   addedLine: string;
   colName: string;
   colType: string;
-  summary: string;
 }
 
 const PATCH_SCENARIOS: PatchScenario[] = [
   {
     id: "add-col-orders",
-    commandLabel: "Command::AddColumn · orders",
     table: "orders",
-    byteRange: "342..342",
-    patchBytes: "28 B",
-    fullFileBytes: "648 B",
     addedLine: "  discount_pct decimal(5,2)",
     colName: "discount_pct",
     colType: "decimal(5,2)",
-    summary: "orders +discount_pct",
   },
   {
     id: "add-col-users",
-    commandLabel: "Command::AddColumn · users",
     table: "users",
-    byteRange: "139..139",
-    patchBytes: "24 B",
-    fullFileBytes: "648 B",
     addedLine: "  avatar_url varchar(255)",
     colName: "avatar_url",
     colType: "varchar(255)",
-    summary: "users +avatar_url",
   },
   {
     id: "add-ref-reviews",
-    commandLabel: "Command::AddRef · reviews",
     table: "reviews",
-    byteRange: "518..518",
-    patchBytes: "33 B",
-    fullFileBytes: "648 B",
     addedLine: "  order_id int [ref: > orders.id]",
     colName: "order_id",
     colType: "int [FK]",
-    summary: "reviews -> orders.id",
   },
 ];
 
@@ -109,264 +89,21 @@ export function AppShowcase() {
       {/* Centered Mixed-Weight Editorial Header */}
       <div className="px-6 py-12 sm:py-16 border-b border-border text-center">
         <h2 className="text-3xl sm:text-5xl tracking-[-0.03em] leading-[1.12] font-light text-muted-foreground max-w-2xl mx-auto">
-          Watch a schema{" "}
-          <strong className="font-bold text-foreground">patch in place</strong>
+          One visual workbench,{" "}
+          <strong className="font-bold text-foreground">
+            synchronized in real time
+          </strong>
         </h2>
         <p className="mt-3 text-xs sm:text-sm text-muted-foreground max-w-xl mx-auto leading-relaxed">
-          A visual action triggers <code className="font-mono text-foreground">dbml-edit</code>, splices only the changed byte range in{" "}
-          <code className="font-mono text-foreground">sample.dbml</code>, and re-routes orthogonal SVG edges across Desktop, CLI, and VS Code.
+          Edit in the integrated DBML editor or directly on the canvas &mdash;{" "}
+          <code className="font-mono text-foreground">dbml-edit</code> preserves
+          every comment and{" "}
+          <code className="font-mono text-foreground">layout::route</code>{" "}
+          keeps orthogonal relations clean.
         </p>
       </div>
 
-      {/* Top Action & Status Bar (pg-regression-radar style) */}
-      <div className="px-4 sm:px-6 py-2.5 border-b border-border bg-card flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-2.5 font-mono text-xs">
-          <span className="text-signal font-medium">
-            TextPatch applied ({activePatch.patchBytes} vs {activePatch.fullFileBytes} full rewrite)
-          </span>
-          <span className="text-muted-foreground hidden sm:inline">&middot;</span>
-          <span className="text-muted-foreground tabular-nums hidden sm:inline">
-            byte_start..end:{" "}
-            <strong className="text-foreground">{activePatch.byteRange}</strong>
-          </span>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={handleInjectCommand}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded border border-border bg-card hover:bg-secondary text-foreground font-mono text-xs font-medium transition-colors"
-          >
-            <Plus className="w-3.5 h-3.5 text-signal" />
-            <span>Inject Command</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Part 1: Millimeter-Grid Byte-Rewrite vs Minimal TextPatch Radar Chart */}
-      <div className="relative radar-grid-bg border-b border-border px-4 sm:px-6 py-5 overflow-x-auto">
-        <div className="min-w-[680px]">
-          <svg
-            viewBox="0 0 860 195"
-            className="w-full h-[185px] overflow-visible select-none"
-            role="img"
-            aria-label="Chart comparing full AST file rewrites (648 bytes) versus dbml-edit minimal TextPatch splices (24-33 bytes)"
-          >
-            <defs>
-              <linearGradient id="crimsonArea" x1="0" y1="0" x2="0" y2="1">
-                <stop
-                  offset="0%"
-                  stopColor="hsl(var(--signal-strong))"
-                  stopOpacity="0.20"
-                />
-                <stop
-                  offset="100%"
-                  stopColor="hsl(var(--signal-strong))"
-                  stopOpacity="0.02"
-                />
-              </linearGradient>
-            </defs>
-
-            {/* Horizontal Reference Lines */}
-            {[
-              { y: 26, label: "650 B" },
-              { y: 64, label: "300 B" },
-              { y: 104, label: "100 B" },
-              { y: 142, label: "32 B" },
-              { y: 172, label: "0 B" },
-            ].map((row) => (
-              <g key={row.label}>
-                <line
-                  x1="48"
-                  y1={row.y}
-                  x2="758"
-                  y2={row.y}
-                  stroke="hsl(var(--border))"
-                  strokeDasharray="2 2"
-                  strokeWidth="1"
-                />
-                <text
-                  x="4"
-                  y={row.y + 3}
-                  className="fill-muted-foreground font-mono text-[10px] tabular-nums"
-                >
-                  {row.label}
-                </text>
-              </g>
-            ))}
-
-            {/* Vertical Dashed Command Marker 1 */}
-            <line
-              x1="155"
-              y1="16"
-              x2="155"
-              y2="176"
-              stroke="hsl(var(--signal-strong))"
-              strokeDasharray="3 3"
-              strokeWidth="1"
-            />
-            <g transform="translate(142, 2)">
-              <rect
-                x="0"
-                y="0"
-                width="148"
-                height="20"
-                rx="10"
-                fill="hsl(var(--card))"
-                stroke="hsl(var(--border))"
-              />
-              <circle cx="11" cy="10" r="3" fill="hsl(var(--signal-strong))" />
-              <text
-                x="20"
-                y="13.5"
-                className="fill-foreground font-mono text-[10px] font-medium"
-              >
-                GroupTables · sales
-              </text>
-            </g>
-
-            {/* Vertical Dashed Command Marker 2 */}
-            <line
-              x1="615"
-              y1="16"
-              x2="615"
-              y2="176"
-              stroke="hsl(var(--signal-strong))"
-              strokeDasharray="3 3"
-              strokeWidth="1"
-            />
-            <g transform="translate(585, 2)">
-              <rect
-                x="0"
-                y="0"
-                width="176"
-                height="20"
-                rx="10"
-                fill="hsl(var(--card))"
-                stroke="hsl(var(--border))"
-              />
-              <circle cx="11" cy="10" r="3" fill="hsl(var(--signal-strong))" />
-              <text
-                x="20"
-                y="13.5"
-                className="fill-foreground font-mono text-[10px] font-medium"
-              >
-                {activePatch.commandLabel}
-              </text>
-            </g>
-
-            {/* Shaded Crimson Area: Full AST Serializer Dirty Diff */}
-            <path
-              d="M 155 138 L 162 32 L 515 34 L 522 136 L 522 174 L 155 174 Z"
-              fill="url(#crimsonArea)"
-            />
-            <path
-              d="M 615 138 L 622 28 L 758 30 L 758 174 L 615 174 Z"
-              fill="url(#crimsonArea)"
-            />
-
-            {/* Trace 1 (Crimson): Traditional Full-File AST Rewrite (648 B dirty diff) */}
-            <path
-              d="M 52 140 L 110 139 L 155 138 L 162 32 L 240 34 L 340 31 L 430 35 L 515 34 L 522 136 L 575 138 L 615 138 L 622 28 L 690 31 L 758 30"
-              fill="none"
-              stroke="hsl(var(--signal-strong))"
-              strokeWidth="2"
-            />
-
-            {/* Trace 2 (Foreground): dbml-edit Minimal TextPatch (24-33 B surgical splice) */}
-            <path
-              d="M 52 164 L 120 164 L 155 142 L 172 164 L 310 164 L 460 164 L 580 164 L 615 140 L 632 164 L 758 164"
-              fill="none"
-              stroke="hsl(var(--foreground))"
-              strokeWidth="1.75"
-            />
-
-            {/* Callout Box 1 */}
-            <g transform="translate(174, 44)">
-              <rect
-                x="0"
-                y="0"
-                width="162"
-                height="34"
-                rx="5"
-                fill="hsl(var(--card))"
-                stroke="hsl(var(--border))"
-              />
-              <text
-                x="10"
-                y="14"
-                className="fill-signal font-mono text-[10px] font-semibold"
-              >
-                AST re-serialize · 648 B
-              </text>
-              <text
-                x="10"
-                y="26"
-                className="fill-muted-foreground font-mono text-[10px]"
-              >
-                comments &amp; blank lines lost
-              </text>
-            </g>
-
-            {/* Target Pulse + Callout Box 2 */}
-            <circle
-              cx="622"
-              cy="140"
-              r="8"
-              fill="none"
-              stroke="hsl(var(--signal-strong))"
-              strokeWidth="1.2"
-            />
-            <circle cx="622" cy="140" r="3.5" fill="hsl(var(--signal-strong))" />
-            <g transform="translate(638, 114)">
-              <rect
-                x="0"
-                y="0"
-                width="156"
-                height="34"
-                rx="5"
-                fill="hsl(var(--card))"
-                stroke="hsl(var(--signal-border))"
-              />
-              <text
-                x="10"
-                y="14"
-                className="fill-signal font-mono text-[10px] font-semibold"
-              >
-                {activePatch.summary}
-              </text>
-              <text
-                x="10"
-                y="26"
-                className="fill-muted-foreground font-mono text-[10px]"
-              >
-                TextPatch: {activePatch.patchBytes} ({activePatch.byteRange})
-              </text>
-            </g>
-
-            {/* Right End Labels */}
-            <circle cx="758" cy="30" r="2.5" fill="hsl(var(--signal-strong))" />
-            <text
-              x="766"
-              y="33"
-              className="fill-signal font-mono text-[10px] font-semibold tabular-nums"
-            >
-              rewrite 648 B
-            </text>
-
-            <circle cx="758" cy="164" r="2.5" fill="hsl(var(--foreground))" />
-            <text
-              x="766"
-              y="167"
-              className="fill-foreground font-mono text-[10px] font-medium tabular-nums"
-            >
-              dbml-edit {activePatch.patchBytes}
-            </text>
-          </svg>
-        </div>
-      </div>
-
-      {/* Part 2: Authentic 1:1 DB Modeling Workbench (Sidebar + DBML Editor + Canvas + Inspector) */}
+      {/* Authentic 1:1 DB Modeling Workbench (Sidebar + DBML Editor + Canvas + Inspector) */}
       <div>
         {/* Workbench Topbar (Matches docs/img/editor-dbml.png) */}
         <div className="h-9 px-3 border-b border-border bg-muted/50 flex items-center justify-between gap-2 font-mono text-xs select-none">
@@ -393,7 +130,7 @@ export function AppShowcase() {
         </div>
 
         {/* Workbench 4-Pane Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[450px]">
+        <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[460px]">
           {/* Pane 1: Schema Explorer Sidebar (TABLES & RELATIONS from canvas-claro.png) */}
           <div className="lg:col-span-2 border-b lg:border-b-0 lg:border-r border-border bg-card/60 p-3 font-mono text-[11px] flex flex-col justify-between select-none">
             <div className="space-y-4">
@@ -1025,9 +762,9 @@ export function AppShowcase() {
                 </button>
 
                 <div className="font-mono text-[10px] text-muted-foreground bg-card/90 border border-border px-2.5 py-1.5 rounded">
-                  <div>layout::route (r = 8.0px)</div>
+                  <div>Sugiyama + layout::route (r = 8.0px)</div>
                   <div className="text-foreground">
-                    M 260 62 L 296 62 Q 304 62 304 70 ...
+                    1:1 across Desktop, Web CLI &amp; VS Code
                   </div>
                 </div>
               </div>
@@ -1180,7 +917,7 @@ export function AppShowcase() {
         <code className="font-mono text-foreground">brenoLucasN/db_modeling</code>{" "}
         workbench. Click any table to change its header color in the right
         inspector, toggle the DBML editor (<code className="font-mono">{"{}"}</code>),
-        or click <strong className="text-foreground font-medium">+ Inject Command</strong>.
+        or click <strong className="text-foreground font-medium">+ Add Column</strong> in the inspector.
       </div>
     </section>
   );

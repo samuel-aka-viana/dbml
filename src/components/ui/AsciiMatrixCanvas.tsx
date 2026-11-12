@@ -87,7 +87,7 @@ export function AsciiMatrixCanvas() {
 
           // Calm exclusion zone directly behind the left hero text block so copy stays 100% crisp
           const inLeftCopyZone =
-            nx > 0.02 && nx < 0.41 && ny > 0.14 && ny < 0.84;
+            nx > 0.02 && nx < 0.47 && ny > 0.14 && ny < 0.86;
           if (inLeftCopyZone) {
             continue;
           }
@@ -120,28 +120,28 @@ export function AsciiMatrixCanvas() {
           const w2 = Math.cos(c * 0.06 + r * 0.17 - t * 0.95);
           const w3 = Math.sin((c - r) * 0.08 + t * 1.1);
 
-          // Attract clusters toward the center-bottom gap and bottom-right corner (pg-regression-radar layout)
+          // Attract clusters across the open right field and center-bottom transition
           const centerClusterBoost =
             Math.exp(
               -(
-                Math.pow((nx - 0.44) / 0.13, 2) +
-                Math.pow((ny - 0.65) / 0.32, 2)
+                Math.pow((nx - 0.56) / 0.16, 2) +
+                Math.pow((ny - 0.58) / 0.34, 2)
               )
-            ) * 0.85;
+            ) * 0.88;
           const rightClusterBoost =
             Math.exp(
               -(
-                Math.pow((nx - 0.86) / 0.16, 2) +
-                Math.pow((ny - 0.82) / 0.26, 2)
+                Math.pow((nx - 0.82) / 0.20, 2) +
+                Math.pow((ny - 0.52) / 0.36, 2)
               )
-            ) * 0.95;
+            ) * 0.96;
           const topCenterBoost =
             Math.exp(
               -(
-                Math.pow((nx - 0.62) / 0.18, 2) +
-                Math.pow((ny - 0.12) / 0.14, 2)
+                Math.pow((nx - 0.68) / 0.22, 2) +
+                Math.pow((ny - 0.20) / 0.18, 2)
               )
-            ) * 0.75;
+            ) * 0.78;
 
           // Subtle interactive ripple near mouse cursor
           const dx = x - pointerX;
