@@ -64,6 +64,10 @@ export function AppShowcase() {
   const [showEditor, setShowEditor] = useState<boolean>(true);
   const [activeTool, setActiveTool] = useState<"select" | "hand">("select");
   const [zoomLevel, setZoomLevel] = useState<number>(60);
+  const [lightboxSrc, setLightboxSrc] = useState<{
+    src: string;
+    title: string;
+  } | null>(null);
   const [tableColors, setTableColors] = useState<Record<string, string>>({
     orders: "#3b82f6",
     order_items: "#3b82f6",
@@ -921,14 +925,137 @@ export function AppShowcase() {
         </div>
       </div>
 
-      {/* Bottom Caption Bar */}
-      <div className="px-6 py-2.5 border-t border-border bg-muted/30 text-xs text-muted-foreground">
-        Interactive replica of the{" "}
-        <code className="font-mono text-foreground">brenoLucasN/db_modeling</code>{" "}
-        workbench. Click any table to change its header color in the right
-        inspector, toggle the DBML editor (<code className="font-mono">{"{}"}</code>),
-        or click <strong className="text-foreground font-medium">+ Add Column</strong> in the inspector.
+      {/* Real Application Captures (2-Column Architectural Ledger) */}
+      <div className="border-t border-border">
+        <div className="px-6 py-3 border-b border-border bg-muted/30 flex items-center justify-between text-xs text-muted-foreground">
+          <span>
+            Live captures from{" "}
+            <code className="font-mono text-foreground">db-modeling</code>{" "}
+            running natively on Fedora Linux (GPUI).
+          </span>
+          <span className="font-mono text-[11px] hidden sm:inline">
+            Click any capture to inspect full-screen
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-border">
+          <div className="p-6 space-y-3">
+            <button
+              type="button"
+              onClick={() =>
+                setLightboxSrc({
+                  src: "/screenshots/canvas-overview.png",
+                  title: "ER Canvas, TableGroups & Orthogonal Routing",
+                })
+              }
+              className="group relative block w-full rounded border border-border overflow-hidden bg-[#121215] text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-signal"
+            >
+              <img
+                src="/screenshots/canvas-overview.png"
+                alt="DB Modeling desktop app showing the ER canvas with sales and catalog table groups and orthogonal relations"
+                className="w-full h-auto block transition-transform duration-200 group-hover:scale-[1.01]"
+                loading="lazy"
+              />
+              <span className="absolute bottom-2.5 right-2.5 inline-flex items-center gap-1.5 px-2 py-1 rounded bg-background/90 border border-border font-mono text-[10px] text-foreground opacity-0 group-hover:opacity-100 transition-opacity">
+                <Maximize2 className="w-3 h-3" />
+                Inspect
+              </span>
+            </button>
+            <div className="flex items-baseline justify-between gap-2">
+              <h3 className="text-sm font-bold text-foreground tracking-tight">
+                ER Canvas &amp; Orthogonal Routing
+              </h3>
+              <span className="font-mono text-[11px] text-muted-foreground">
+                example.dbml
+              </span>
+            </div>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              Full schema explorer (<code className="font-mono">TABLES</code> &amp;{" "}
+              <code className="font-mono">RELATIONS</code>),{" "}
+              <code className="font-mono">TableGroup</code> bounding boxes, and
+              Sugiyama orthogonal edges with{" "}
+              <code className="font-mono">1</code> /{" "}
+              <code className="font-mono">N</code> cardinality badges.
+            </p>
+          </div>
+
+          <div className="p-6 space-y-3">
+            <button
+              type="button"
+              onClick={() =>
+                setLightboxSrc({
+                  src: "/screenshots/editor-inspector.png",
+                  title: "Bidirectional DBML Editor & Table Inspector",
+                })
+              }
+              className="group relative block w-full rounded border border-border overflow-hidden bg-[#121215] text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-signal"
+            >
+              <img
+                src="/screenshots/editor-inspector.png"
+                alt="DB Modeling desktop app showing the integrated DBML code editor, selected orders table, and right property inspector"
+                className="w-full h-auto block transition-transform duration-200 group-hover:scale-[1.01]"
+                loading="lazy"
+              />
+              <span className="absolute bottom-2.5 right-2.5 inline-flex items-center gap-1.5 px-2 py-1 rounded bg-background/90 border border-border font-mono text-[10px] text-foreground opacity-0 group-hover:opacity-100 transition-opacity">
+                <Maximize2 className="w-3 h-3" />
+                Inspect
+              </span>
+            </button>
+            <div className="flex items-baseline justify-between gap-2">
+              <h3 className="text-sm font-bold text-foreground tracking-tight">
+                DBML Editor &amp; Table Inspector
+              </h3>
+              <span className="font-mono text-[11px] text-muted-foreground">
+                Ctrl+E &middot; Ctrl+I
+              </span>
+            </div>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              Live bidirectional DBML source editor alongside the visual
+              inspector: edit <code className="font-mono">PK</code>,{" "}
+              <code className="font-mono">FK</code>,{" "}
+              <code className="font-mono">NN</code>, and{" "}
+              <code className="font-mono">UQ</code> flags, add columns, or
+              recolor tables with lossless{" "}
+              <code className="font-mono">dbml-edit</code> patches.
+            </p>
+          </div>
+        </div>
       </div>
+
+      {/* Lightbox Modal for Full-Resolution Screenshot Inspection */}
+      {lightboxSrc && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={lightboxSrc.title}
+          onClick={() => setLightboxSrc(null)}
+          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 sm:p-8"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="max-w-6xl w-full rounded-md border border-border bg-card overflow-hidden"
+          >
+            <div className="h-10 px-4 border-b border-border bg-muted/50 flex items-center justify-between font-mono text-xs">
+              <span className="font-medium text-foreground">
+                {lightboxSrc.title}
+              </span>
+              <button
+                type="button"
+                onClick={() => setLightboxSrc(null)}
+                className="p-1 rounded hover:bg-secondary text-muted-foreground hover:text-foreground"
+                aria-label="Close preview"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <img
+              src={lightboxSrc.src}
+              alt={lightboxSrc.title}
+              className="w-full h-auto block"
+            />
+          </div>
+        </div>
+      )}
     </section>
   );
 }
