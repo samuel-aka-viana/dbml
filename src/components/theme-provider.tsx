@@ -15,8 +15,8 @@ type ThemeProviderState = {
 };
 
 const initialState: ThemeProviderState = {
-  theme: "system",
-  resolvedTheme: "dark",
+  theme: "light",
+  resolvedTheme: "light",
   setTheme: () => null,
 };
 
@@ -24,15 +24,15 @@ const ThemeProviderContext = React.createContext<ThemeProviderState>(initialStat
 
 export function ThemeProvider({
   children,
-  defaultTheme = "system",
-  storageKey = "dbm-theme",
+  defaultTheme = "light",
+  storageKey = "dbm-ledger-theme",
   ...props
 }: ThemeProviderProps) {
   const [theme, setThemeState] = React.useState<Theme>(
     () => (localStorage.getItem(storageKey) as Theme) || defaultTheme
   );
 
-  const [resolvedTheme, setResolvedTheme] = React.useState<"dark" | "light">("dark");
+  const [resolvedTheme, setResolvedTheme] = React.useState<"dark" | "light">("light");
 
   React.useEffect(() => {
     const root = window.document.documentElement;
@@ -40,7 +40,7 @@ export function ThemeProvider({
     const applyTheme = (currentTheme: Theme) => {
       root.classList.remove("light", "dark");
 
-      let effectiveTheme: "dark" | "light" = "dark";
+      let effectiveTheme: "dark" | "light" = "light";
       if (currentTheme === "system") {
         effectiveTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
           ? "dark"
@@ -55,7 +55,6 @@ export function ThemeProvider({
 
     applyTheme(theme);
 
-    // Escuta mudanças no sistema operacional quando configurado como 'system'
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
     const handleChange = () => {
       if (theme === "system") {

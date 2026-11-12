@@ -18,6 +18,12 @@ const config: Config = {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        signal: {
+          DEFAULT: "hsl(var(--signal))",
+          strong: "hsl(var(--signal-strong))",
+          soft: "hsl(var(--signal-soft))",
+          border: "hsl(var(--signal-border))",
+        },
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
@@ -38,19 +44,10 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        zed: {
-          base: "#0c0e10",
-          surface: "#121518",
-          card: "#16191d",
-          border: "#22262b",
-          borderSubtle: "#1b1e23",
-          textPrimary: "#ededed",
-          textSecondary: "#8b949e",
-          textTertiary: "#545d68",
-          cyan: "#38bdf8",
-          mint: "#10b981",
-          amber: "#f59e0b",
-        }
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

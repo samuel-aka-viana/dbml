@@ -4,50 +4,58 @@
 
 @layer base {
   :root {
-    /* Modo Claro: Zed Light / Titânio Suave */
-    --background: 210 20% 98%;          /* #f8fafc */
-    --foreground: 222 47% 11%;          /* #0f172a */
-    --card: 0 0% 100%;                  /* #ffffff */
-    --card-foreground: 222 47% 11%;
+    /* Light Mode (Default): Warm Technical Paper & Signal Crimson */
+    --background: 0 0% 98%;             /* #fafafa - Editorial Technical Paper */
+    --foreground: 240 6% 7%;            /* #111113 - Deep Carbon Ink (17.8:1) */
+    --card: 0 0% 100%;                  /* #ffffff - Crisp Elevated Pane */
+    --card-foreground: 240 6% 7%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-    --primary: 222 47% 11%;             /* #0f172a */
-    --primary-foreground: 210 20% 98%;
-    --secondary: 210 16% 93%;           /* #eef2f6 */
-    --secondary-foreground: 222 47% 11%;
-    --muted: 210 16% 93%;
-    --muted-foreground: 215 16% 40%;    /* Ratio 5.2:1 com o background */
-    --accent: 210 16% 90%;
-    --accent-foreground: 222 47% 11%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 20% 98%;
-    --border: 214 20% 88%;              /* Micro-borda de 1px */
-    --input: 214 20% 88%;
-    --ring: 222 47% 11%;
-    --radius: 0.375rem;                 /* 6px - Cantos de precisão Zed */
+    --popover-foreground: 240 6% 7%;
+    --primary: 240 6% 7%;               /* #111113 - Solid Carbon Pill CTA */
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 5% 94%;            /* #efeff1 - Subtle Ledger Wash */
+    --secondary-foreground: 240 6% 7%;
+    --muted: 240 5% 95%;                /* #f2f2f4 - Muted Grid Cell Fill */
+    --muted-foreground: 240 5% 34%;     /* #52525b - Slate Graphite (7.2:1) */
+    --accent: 240 5% 92%;
+    --accent-foreground: 240 6% 7%;
+    --destructive: 0 72% 42%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 6% 89%;               /* #e3e3e7 - 1px Exposed Structural Hairline */
+    --input: 240 6% 89%;
+    --ring: 0 72% 42%;                  /* #b91c1c - Signal Crimson Focus Ring */
+    --signal: 0 72% 42%;                /* #b91c1c - Signal Crimson Ink (6.4:1 contrast) */
+    --signal-strong: 0 74% 50%;         /* #df2020 - Radar Trace Crimson */
+    --signal-soft: 0 86% 97%;           /* #fef2f2 - Blush Resolution Bar Fill */
+    --signal-border: 0 70% 86%;         /* #f5bcbc - Crimson Hairline Rule */
+    --radius: 0.375rem;                 /* 6px - Technical Instrument Precision */
   }
 
   .dark {
-    /* Modo Escuro: Zed Dark Grafite Profundo */
-    --background: 220 14% 5.5%;         /* #0c0e10 */
-    --foreground: 0 0% 93%;             /* #ededed */
-    --card: 220 14% 8%;                 /* #121518 */
-    --card-foreground: 0 0% 93%;
-    --popover: 220 14% 10%;             /* #16191d */
-    --popover-foreground: 0 0% 93%;
-    --primary: 0 0% 98%;                /* #fafafa */
-    --primary-foreground: 222 47% 11%;
-    --secondary: 220 12% 13%;           /* #1e2227 */
-    --secondary-foreground: 0 0% 98%;
-    --muted: 220 12% 14%;
-    --muted-foreground: 215 14% 60%;    /* #94a3b8 - Ratio 6.1:1 com #0c0e10 */
-    --accent: 220 12% 16%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
+    /* Dark Mode: Deep Obsidian Ledger & Radar Crimson */
+    --background: 240 8% 5%;            /* #0c0c0e - Obsidian Ledger Ground */
+    --foreground: 240 5% 96%;           /* #f4f4f5 - Crisp Chalk Ink (17.5:1) */
+    --card: 240 8% 7.5%;               /* #121215 - Elevated Instrument Surface */
+    --card-foreground: 240 5% 96%;
+    --popover: 240 8% 9%;               /* #151519 */
+    --popover-foreground: 240 5% 96%;
+    --primary: 240 5% 96%;              /* #f4f4f5 */
+    --primary-foreground: 240 8% 5%;
+    --secondary: 240 6% 12%;            /* #1d1d20 */
+    --secondary-foreground: 240 5% 96%;
+    --muted: 240 6% 11%;                /* #1a1a1e */
+    --muted-foreground: 240 5% 65%;     /* #a1a1aa - Muted Silver (7.6:1) */
+    --accent: 240 6% 14%;
+    --accent-foreground: 240 5% 96%;
+    --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 98%;
-    --border: 216 11% 16%;              /* #22262b */
-    --input: 216 11% 16%;
-    --ring: 212 96% 78%;
+    --border: 240 6% 15%;               /* #242429 - 1px Exposed Dark Hairline */
+    --input: 240 6% 15%;
+    --ring: 0 84% 67%;                  /* #f46060 */
+    --signal: 0 86% 70%;                /* #f66d6d - High-Contrast Signal Red (7.4:1) */
+    --signal-strong: 0 84% 60%;         /* #ef4444 - Radar Trace Red */
+    --signal-soft: 0 50% 11%;           /* #2a0e0e - Deep Crimson Wash */
+    --signal-border: 0 50% 24%;         /* #5c1e1e - Dark Crimson Hairline */
   }
 }
 
@@ -55,28 +63,49 @@
   * {
     @apply border-border;
   }
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
+    caret-color: hsl(var(--signal));
   }
   ::selection {
-    @apply bg-foreground text-background;
+    background-color: hsl(var(--signal-soft));
+    color: hsl(var(--signal));
+  }
+  a {
+    text-underline-offset: 4px;
   }
 }
 
-/* Custom Scrollbars refinadas */
+/* Tabular numerals for telemetry, line numbers, and benchmarks */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Millimeter Radar Chart Grid Background */
+.radar-grid-bg {
+  background-size: 24px 24px;
+  background-image:
+    linear-gradient(to right, hsl(var(--border) / 0.55) 1px, transparent 1px),
+    linear-gradient(to bottom, hsl(var(--border) / 0.55) 1px, transparent 1px);
+}
+
+/* Custom Scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: hsl(var(--background));
 }
 ::-webkit-scrollbar-thumb {
   background: hsl(var(--border));
-  border-radius: 9999px;
+  border-radius: 0px;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: hsl(var(--muted-foreground));
