@@ -8,42 +8,42 @@ web
 
 ## Users
 
-Backend engineers, database architects, systems programmers, and full-stack teams who design, evolve, and review relational schemas in DBML alongside Git-tracked application repositories.
+Backend engineers, database architects, and full-stack developers who model, review, and version relational database schemas using DBML (Database Markup Language) across desktop, terminal/browser, and VS Code workflows.
 
 ## Product Purpose
 
-DB Modeling is a native, GPU-accelerated visual database modeler built in Rust 2024 on top of GPUI (Zed's GPU UI framework). It synchronizes a visual entity-relationship canvas and a textual `.dbml` document in real time at 120 FPS, keeping all data 100% offline on the developer's machine.
+DB Modeling (`github.com/brenoLucasN/db_modeling`, `v0.1.2`) is a visual relational database modeling workbench powered by DBML and a shared Rust 2024 core. It delivers a 1:1 identical experience across a **Native Desktop App (`crates/app` via GPUI)**, an **Interactive Web CLI (`crates/cli` via Axum + WebSockets)**, and a **VS Code Extension (`vscode-extension` Custom Editor VSIX)**, compiled to both native machine code and WebAssembly (`crates/dbml-wasm`).
 
 ## Positioning
 
-Unlike browser-based or Electron-wrapped schema diagrammers that reserialize files and strip formatting, DB Modeling treats the visual canvas and DBML source as two synchronized projections of a single lossless Rowan Concrete Syntax Tree (`crates/dbml-syntax` and `crates/dbml-edit`), emitting surgical text patches while storing canvas coordinates in a non-invasive `<schema>.dbml.layout.json` sidecar.
+1. **Strict DBML as the Single Source of Truth**: `.dbml` files remain 100% pure and compatible with `dbdiagram.io`, without polluting schemas with proprietary comment metadata. Visual positions and table colors are persisted in a deterministic, sorted-key sidecar (`<file>.dbml.layout.json`) built for clean Git diffs.
+2. **Lossless Bidirectional Editing**: Every visual canvas operation (`AddTable`, `AddColumn`, `AddRef`, `GroupTables`, `SetTableColor`, `RenameColumn`, `SetColumnFlag`) is processed by `crates/dbml-edit` over a lossless Rowan Concrete Syntax Tree (`crates/dbml-syntax`), emitting minimal `TextPatch` byte-range replacements that preserve 100% of comments and formatting.
+3. **1:1 Multi-Target Architecture**: One Rust core (`schema`, `dbml-syntax`, `dbml-analysis`, `dbml-edit`, `layout`) drives both the native `gpui-kit` desktop app and the `dbml-wasm` + `@dbmodeling/canvas-web` engine shared by the CLI server and VS Code extension.
 
 ## Operating Context
 
-Used locally on Linux (Wayland/X11 via Vulkan), Windows 11 (DirectX 12), and macOS alongside code editors and Git workflows. Developers open `.dbml` files directly from their repo, navigate via keyboard (`Ctrl+K` Command Palette) or hardware-accelerated pan/zoom canvas, and commit clean diffs without cloud lock-in.
+Developers run the native desktop app (`cargo run -p app --release -- schema.dbml` or native `.deb`, `.rpm`, `.dmg`, `.exe`/`.msi` installers), launch the local live-reload WebSocket server from the terminal (`dbml schema.dbml --port 3000 --theme dark`), or open `*.dbml` files directly inside VS Code via the `dbmodeling.editor` Custom Editor.
 
 ## Capabilities and Constraints
 
-- **Bi-directional Lossless Sync**: Moving tables or editing relationships on the canvas applies minimal CST patches via `crates/dbml-edit`, preserving 100% of comments and whitespace.
-- **Direct GPU Rendering**: Built on GPUI with ~8.2 ms frame times (120 Hz), ~48.2 MB RAM working set on a 50-table schema, <140 ms cold startup, and 0 ms GC pauses.
-- **Transparent Sidecar Layout**: Visual coordinates and group colors persist in `<schema>.dbml.layout.json` so `.dbml` files remain strictly standard.
-- **Headless Modular Workspace**: Six isolated Rust crates (`crates/schema`, `crates/dbml-syntax`, `crates/dbml-analysis`, `crates/dbml-edit`, `crates/layout`, `crates/export`).
-- **Open Source**: MIT-licensed repository (`github.com/brenoLucasN/db_modeling`) created by Breno Lucas & Samuel Viana, with OS-aware binary releases (`.AppImage`, `.deb`, `.msi`, `.dmg`).
+- **Workbench UI Parity**: Shared Topbar (tabs + `Ctrl+K` Command Palette), Left Sidebar (`Ctrl+B` with Project Files `Ctrl+Shift+E`, Schema Explorer `Ctrl+Shift+D`, Problems `Ctrl+Shift+M`, and DBML Editor `Ctrl+E`), Center Interactive Canvas with Floating 6-Tool Pill (`V` Select, `H` Hand, `T` New Table, `Ctrl+L` Auto-Layout, `Shift+1` Fit View, `Ctrl+E` Editor), and Right Inspector (`Ctrl+I` with 8-color table palette and `Ctrl+/` Keyboard Shortcuts).
+- **Deterministic Sugiyama Layout & Orthogonal Routing (`crates/layout`)**: Hierarchical layered layout (`layout::layered` with 4-pass barycenter crossing reduction), `TableGroup` cluster packing (`layout::clustered`), and obstacle-avoiding orthogonal relation routing (`layout::route`) with `8px` rounded SVG corners (`M ... L ... Q ...`) and cardinality badges (`1` and `N`).
+- **High-Resolution Export**: Export schemas to **PNG (2x)** and **SVG** with optional title, color legend (`Ctrl+Shift+L`), and light/dark theme support (`Ctrl+T`).
+- **Synchronized Workspace Build**: Managed via `./scripts/sync-build.sh --release` across all Rust crates, `wasm-pack`, `@dbmodeling/canvas-web`, and `vscode-extension`.
 
 ## Brand Commitments
 
-- **Visual Reference**: Rebranded after the editorial technical-ledger aesthetic of `pg-regression-radar` — light-first warm paper ground (`#fafafa`) with full dark-mode parity (`#0c0c0e`), exposed `1px` architectural grid hairlines, mixed-weight display typography (light muted slate paired with bold deep ink in the same headline), ASCII/DBML character-matrix hero texture, and Signal Crimson (`#dc2626`) surgical highlights.
-- **No Cloud / No Bloat**: Never imply SaaS accounts, cloud telemetry, or Electron/WebView wrappers.
+- **Visual Reference**: Rebranded in the **Architectural Telemetry Ledger** aesthetic inspired by `pg-regression-radar` — warm technical paper ground (`#fafafa`) with dark mode parity (`#0c0c0e`), exposed `1px` structural grid hairlines (`#e3e3e7` / `#242429`), mixed-weight display headlines (`font-light` muted slate paired with `font-bold` carbon ink), ASCII character-matrix hero texture, and Signal Crimson (`#b91c1c` / `#df2020`) surgical highlights.
+- **Official Table Color Palette**: Preserves the 8 canonical table/group colors from `crates/dbml-wasm` (`#3b82f6` Blue, `#06b6d4` Cyan, `#22c55e` Green, `#84cc16` Lime, `#f59e0b` Amber, `#f97316` Orange, `#ec4899` Pink, `#8b5cf6` Violet) inside the interactive canvas showcase.
 
 ## Evidence on Hand
 
-- Real benchmark telemetry on a 50-table relational model (48.2 MB RAM vs ~650 MB in Electron; <140 ms startup vs ~2.4 s WebView init; 120 FPS / ~8.2 ms frame time; 0 ms GC pauses; <1.4 ms Rowan CST parser overhead).
-- Complete 5-table e-commerce schema (`users`, `products`, `orders`, `order_items`, `reviews` across `vendas` and `catalogo` TableGroups) demonstrating bidirectional DBML + visual ER canvas + CST patch inspection.
-- Six documented workspace crates and live GitHub release detection (`brenoLucasN/db_modeling`).
+- Real workspace crates in `brenoLucasN/db_modeling`: `crates/schema`, `crates/dbml-syntax` (`logos` 0.16.1 + `rowan` 0.18.0-alpha.2), `crates/dbml-analysis`, `crates/dbml-edit`, `crates/layout`, `crates/app` (`gpui-kit` 0.8.0), `crates/dbml-wasm`, `crates/cli` (`axum` 0.8 + `notify` 8), `packages/canvas-web`, and `vscode-extension`.
+- Official e-commerce schema (`crates/app/assets/sample.dbml`) with `users` (`[headercolor: #8b5cf6]`), `products`, `orders`, `order_items`, `reviews`, `TableGroup sales [color: #3b82f6]`, and `TableGroup catalog [color: #22c55e]`.
+- Real `TextPatch` and `SceneGeometry` serialization structures from `crates/dbml-wasm/src/types.rs`.
 
 ## Product Principles
 
-1. **Proof in the First Viewport**: Show the real DBML CST and synchronized schema immediately rather than abstract marketing illustrations.
-2. **Surgical Precision Over Decoration**: Use structural 1px grid hairlines, tabular monospace telemetry, and Signal Crimson focal points only where an engineer's eye should lock.
-3. **Zero-Destruction Guarantees**: Every visual interaction must prove that source comments, formatting, and Git diffs stay intact.
-4. **Native Speed as Felt Structure**: The web showcase should reflect the crispness, keyboard-first ergonomics, and low-latency clarity of the native GPUI app.
+1. **Pure DBML, Clean Git Diffs**: Never pollute `.dbml` files with layout comments; keep layout state in deterministic `<file>.dbml.layout.json` sidecars and emit minimal byte-range patches.
+2. **One Rust Core, Every Environment**: Whether in the native GPUI window, local CLI browser tab, or VS Code tab, the exact same Rust parser, analyzer, layout engine, and patcher run underneath.
+3. **Proof in the First Viewport**: Expose the real `TextPatch` payload, `sample.dbml` source, and interactive 1:1 workbench immediately.

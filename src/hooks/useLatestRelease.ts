@@ -12,7 +12,7 @@ const REPO_NAME = "db_modeling";
 
 export function useLatestRelease(): ReleaseData {
   const [data, setData] = useState<ReleaseData>({
-    version: "v0.1.0",
+    version: "v0.1.2",
     publishedAt: null,
     hasPublishedReleases: false,
     isLoading: true,
@@ -32,7 +32,13 @@ export function useLatestRelease(): ReleaseData {
         if (isMounted && json.tag_name) {
           setData({
             version: json.tag_name,
-            publishedAt: json.published_at ? new Date(json.published_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : null,
+            publishedAt: json.published_at
+              ? new Date(json.published_at).toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "numeric",
+                  year: "numeric",
+                })
+              : null,
             hasPublishedReleases: true,
             isLoading: false,
           });

@@ -12,39 +12,51 @@ interface CrateInfo {
 const CRATES: CrateInfo[] = [
   {
     name: "crates/schema",
-    desc: "Pure semantic data model: Table, Column, Ref, Enum, TableGroup, and deterministic IDs.",
+    desc: "Pure semantic data model: Table, Column, Ref, RefKind (1:1, 1:N, N:1, N:N), and TableGroup.",
     role: "Core Model",
     testCmd: "cargo test -p schema",
   },
   {
     name: "crates/dbml-syntax",
-    desc: "Logos high-speed lexer + error-tolerant CST parser built on Rowan with zero UI dependency.",
-    role: "Lossless Parser",
+    desc: "logos 0.16 lexer + error-tolerant lossless CST parser built on rowan 0.18 with zero UI coupling.",
+    role: "Rowan CST",
     testCmd: "cargo test -p dbml-syntax",
   },
   {
     name: "crates/dbml-analysis",
-    desc: "CST-to-Schema projection, real-time diagnostics, foreign-key validation, and completions.",
-    role: "Static Analysis",
+    desc: "CST-to-Schema semantic projection (analyze), real-time linter diagnostics (lint), and completions.",
+    role: "Analysis & Lint",
     testCmd: "cargo test -p dbml-analysis",
   },
   {
     name: "crates/dbml-edit",
-    desc: "Translates visual canvas intents into minimal lossless byte-span text patches.",
-    role: "Mutation Engine",
+    desc: "Semantic operations (add_table, add_column, link_tables, group_tables, format, swap_lines) emitting minimal CST patches.",
+    role: "Minimal Patches",
     testCmd: "cargo test -p dbml-edit",
   },
   {
     name: "crates/layout",
-    desc: "Sugiyama hierarchical auto-layout, overlap removal, and orthogonal edge routing.",
-    role: "Graph Geometry",
+    desc: "Sugiyama layered layout (4-pass barycenter), TableGroup cluster packing, and obstacle-avoiding orthogonal route().",
+    role: "Sugiyama & Route",
     testCmd: "cargo test -p layout",
   },
   {
-    name: "crates/export",
-    desc: "Direct scene rasterization to PNG/JPEG (resvg/tiny-skia) and Mermaid erDiagram output.",
-    role: "Export Pipeline",
-    testCmd: "cargo test -p export",
+    name: "crates/dbml-wasm",
+    desc: "wasm-bindgen module exposing parse_and_analyze, apply_command, compute_scene, and 8px rounded SVG path generation.",
+    role: "Wasm Bridge",
+    testCmd: "cargo test -p dbml-wasm",
+  },
+  {
+    name: "crates/app & crates/cli",
+    desc: "Native GPUI desktop app (gpui-kit 0.8) and local Axum HTTP + WebSocket CLI server with notify file watching.",
+    role: "Desktop & CLI",
+    testCmd: "cargo check -p app -p dbml-cli",
+  },
+  {
+    name: "canvas-web & vscode-extension",
+    desc: "Shared web workbench (@dbmodeling/canvas-web) and VS Code Custom Editor VSIX (dbmodeling.editor).",
+    role: "Web & VSIX",
+    testCmd: "./scripts/sync-build.sh",
   },
 ];
 
@@ -59,11 +71,11 @@ export function OpenSourceHub() {
             className="w-2 h-2 bg-signal-strong inline-block shrink-0"
           />
           <span className="text-xs font-bold tracking-tight text-foreground">
-            Modular Rust workspace
+            Workspace architecture
           </span>
         </div>
         <span className="font-mono text-[11px] text-muted-foreground hidden sm:inline">
-          cargo test --workspace
+          insta 1.49 snapshots &middot; proptest 1.12
         </span>
       </div>
 
@@ -73,26 +85,30 @@ export function OpenSourceHub() {
         <div className="lg:col-span-5 p-6 sm:p-10 lg:border-r border-b lg:border-b-0 border-border flex flex-col justify-between gap-8">
           <div className="space-y-4">
             <h2 className="text-3xl sm:text-4xl tracking-[-0.03em] leading-[1.12] font-light text-muted-foreground">
-              Built in the open,{" "}
+              One Rust core,{" "}
               <strong className="font-bold text-foreground">
-                six headless crates
+                eight modular packages
               </strong>
             </h2>
 
             <p className="text-xs sm:text-[13px] text-muted-foreground leading-relaxed">
-              Every core capability of DB Modeling is isolated into a headless
-              Rust crate with zero UI coupling. Run the entire compiler-grade
-              test suite, author SQL dialect exporters, or inspect the Sugiyama
-              graph layout engine directly from your terminal.
+              Every core capability of{" "}
+              <code className="font-mono text-foreground">brenoLucasN/db_modeling</code>{" "}
+              is isolated into a headless Rust crate verified with{" "}
+              <code className="font-mono text-foreground">insta</code> snapshot
+              tests and <code className="font-mono text-foreground">proptest</code>.
+              A single script compiles the Rust core to native binaries and
+              WebAssembly, syncing Desktop, CLI, and VS Code in one pass.
             </p>
           </div>
 
           <div className="space-y-4 pt-4 border-t border-border">
             <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground font-mono">
-              <span>Command Palette via</span>
+              <span>Command Palette</span>
               <Keycap>Ctrl+K</Keycap>
               <span>&middot;</span>
-              <span>Linux, Windows &amp; macOS</span>
+              <span>Shortcuts</span>
+              <Keycap>Ctrl+/</Keycap>
             </div>
 
             <div className="flex flex-wrap items-center gap-2.5">
@@ -114,7 +130,7 @@ export function OpenSourceHub() {
                   rel="noopener noreferrer"
                 >
                   <GitFork className="w-3.5 h-3.5" />
-                  <span>Good First Issues</span>
+                  <span>Issues &amp; PRs</span>
                   <ExternalLink className="w-3 h-3 text-muted-foreground" />
                 </a>
               </Button>
@@ -122,12 +138,12 @@ export function OpenSourceHub() {
           </div>
         </div>
 
-        {/* Right Column: Exposed 1px Ledger Matrix of Rust Crates */}
+        {/* Right Column: Exposed 1px Ledger Matrix of All 8 Workspace Modules */}
         <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 divide-y divide-border">
           {CRATES.map((crateItem, idx) => (
             <div
               key={crateItem.name}
-              className={`p-5 sm:p-6 bg-card/30 hover:bg-card transition-colors flex flex-col justify-between gap-3 ${
+              className={`p-5 bg-card/30 hover:bg-card transition-colors flex flex-col justify-between gap-3 ${
                 idx % 2 === 0 ? "sm:border-r border-border" : ""
               } ${idx === 0 ? "border-t-0" : ""}`}
             >
@@ -136,7 +152,7 @@ export function OpenSourceHub() {
                   <span className="font-semibold text-foreground text-xs">
                     {crateItem.name}
                   </span>
-                  <span className="text-[10px] text-signal bg-signal-soft border border-signal-border px-1.5 py-0.5 rounded-sm">
+                  <span className="text-[10px] text-signal bg-signal-soft border border-signal-border px-1.5 py-0.5 rounded-sm shrink-0">
                     {crateItem.role}
                   </span>
                 </div>

@@ -9,11 +9,11 @@ export function Footer() {
             </span>
             <span className="text-muted-foreground">&middot;</span>
             <span className="text-muted-foreground">
-              Created by Breno Lucas &amp; Samuel Viana
+              github.com/brenoLucasN/db_modeling
             </span>
           </div>
           <div className="text-[11px] text-muted-foreground">
-            Engineered in Rust 2024 with GPUI &amp; Rowan CST. 100% offline on your machine.
+            Native Desktop (GPUI) &middot; Interactive Web CLI (Axum + WS) &middot; VS Code Extension (Wasm).
           </div>
         </div>
 
@@ -24,7 +24,7 @@ export function Footer() {
             rel="noopener noreferrer"
             className="hover:text-signal underline-offset-4 hover:underline transition-colors"
           >
-            GitHub
+            Repository
           </a>
           <a
             href="https://github.com/brenoLucasN/db_modeling/releases"
@@ -32,10 +32,10 @@ export function Footer() {
             rel="noopener noreferrer"
             className="hover:text-signal underline-offset-4 hover:underline transition-colors"
           >
-            Releases
+            Releases (.deb / .rpm / .dmg / .exe)
           </a>
           <a
-            href="https://dbml.org"
+            href="https://dbml.dbdiagram.io/docs"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-signal underline-offset-4 hover:underline transition-colors"
@@ -43,7 +43,7 @@ export function Footer() {
             DBML Spec
           </a>
           <a
-            href="https://github.com/brenoLucasN/db_modeling/blob/develop/LICENSE"
+            href="https://github.com/brenoLucasN/db_modeling/blob/main/LICENSE"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-signal underline-offset-4 hover:underline transition-colors"

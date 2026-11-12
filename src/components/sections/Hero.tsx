@@ -2,52 +2,18 @@ import { useState } from "react";
 import { Check, Copy, FileCode2, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DownloadCTA } from "@/components/ui/DownloadCTA";
+import { AsciiMatrixCanvas } from "@/components/ui/AsciiMatrixCanvas";
 
-const ASCII_MATRIX_TOP = [
-  "RE::||++:................................................:++||::....+++|::::++||++--++||++--....",
-  "....||++:................................................:++||::....+++|::::++||++--++||++--....",
-  ".........................................................:++||::....+++|::::ROWANCST::||++--....",
-  "........................................................................::::DBMLSYNC::||++--....",
-];
-
-const ASCII_MATRIX_CENTER = [
-  "         ++++++DBMLROWAN+",
-  "      +ROWANCSTDBMLROWANC",
-  "     ||SYNCSCHEMAROWANCST",
-  "    --DBMLROWANCSTSYNCSCH",
-  "   +--ROWANCSTDBML&GPUI++",
-  "     ||SYNCSCHEMA120FPS:",
-  "     |+DBMLROWANCST||   ",
-  "     :--ROWANCST+:      ",
-  "    ++--SYNCSCHEMA-     ",
-  "   ||+::DBMLROWANCST.   ",
-  "  ::++--ROWANCSTDBML+   ",
-  "  ++++||SYNCSCHEMAROW   ",
-];
-
-const ASCII_MATRIX_BOTTOM_RIGHT = [
-  "DBMLROWANCSTDBMLROWANCSTDBMLROWANCST++::",
-  "ROWANCSTDBMLROWANCSTDBMLROWANCSTDBML::..",
-  "SYNCSCHEMADBMLROWANCSTDBMLROWANCST**::..",
-  "DBMLROWANCSTDBMLROWANCSTDBMLROWANCST+-::",
-  "ROWANCSTDBMLROWANCSTDBMLROWANCSTDBML+::.",
-  "SYNCSCHEMADBMLROWANCSTDBMLROWANCSTDBML:.",
-];
-
-const CST_JSON_TEXT = `{
-  "document": "exemplo.dbml",
-  "sidecar": "exemplo.dbml.layout.json",
-  "syntaxTree": "RowanLosslessCST",
-  "mutationId": "patch-orders-user-fk-091",
-  "statement": "Ref: orders.user_id > users.id [delete: cascade]",
-  "status": "Synchronized",
-  "preservedTokens": 1.00,
-  "cstParseLatencyMs": 0.84,
-  "gpuiFrameTimeMs": 8.21,
-  "frameRateHz": 120,
-  "fullFileRewrite": false,
-  "diffSummary": "surgical 48-byte span edit at line 24..25; all comments intact",
-  "updatedAt": "2026-11-12T13:00:00Z"
+const TEXT_PATCH_JSON = `{
+  "command": { "action": "add_column", "payload": { "table": "orders", "name": "discount_pct", "ty": "decimal(5,2)" } },
+  "range": { "start": { "line": 20, "character": 19 }, "end": { "line": 20, "character": 19 } },
+  "byte_start": 342,
+  "byte_end": 342,
+  "new_text": "\\n  discount_pct decimal(5,2)",
+  "created_column": ["orders", "discount_pct"],
+  "should_relayout": false,
+  "sidecar": "sample.dbml.layout.json",
+  "targets": ["crates/app (GPUI)", "crates/cli (Axum+WS)", "vscode-extension (Wasm)"]
 }`;
 
 export function Hero() {
@@ -55,7 +21,7 @@ export function Hero() {
   const [showRawDbml, setShowRawDbml] = useState(false);
 
   const handleCopy = () => {
-    navigator.clipboard?.writeText(CST_JSON_TEXT);
+    navigator.clipboard?.writeText(TEXT_PATCH_JSON);
     setCopied(true);
     setTimeout(() => setCopied(false), 1800);
   };
@@ -65,34 +31,24 @@ export function Hero() {
       id="hero"
       className="relative border-b border-border bg-background overflow-hidden"
     >
-      {/* Subtle Monospace Character-Matrix Texture (pg-regression-radar signature) */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none select-none font-mono text-[10px] leading-[1.15] text-foreground/[0.13] dark:text-foreground/[0.11]"
-      >
-        <div className="px-2 pt-1.5 overflow-hidden whitespace-pre">
-          {ASCII_MATRIX_TOP.join("\n")}
-        </div>
-        <div className="hidden lg:block absolute left-[36%] bottom-3 whitespace-pre">
-          {ASCII_MATRIX_CENTER.join("\n")}
-        </div>
-        <div className="hidden sm:block absolute right-2 bottom-2 text-right whitespace-pre">
-          {ASCII_MATRIX_BOTTOM_RIGHT.join("\n")}
-        </div>
-      </div>
+      {/* Animated Full-Bleed ASCII Character Matrix (pg-regression-radar signature) */}
+      <AsciiMatrixCanvas />
 
       {/* Main Two-Column Architectural Hero Content */}
-      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 px-6 sm:px-10 pt-8 pb-12 sm:pt-12 sm:pb-16 items-center">
-        {/* Left Column: Brand Title, Proposition & Pill CTAs */}
-        <div className="lg:col-span-5 bg-background/90 backdrop-blur-[2px] py-2 pr-2 space-y-5">
+      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 px-6 sm:px-10 pt-10 pb-12 sm:pt-14 sm:pb-16 items-center">
+        {/* Left Column: Brand Title, Proposition & Single-Row Pill CTAs */}
+        <div className="lg:col-span-5 py-2 pr-2 space-y-5">
           <h1 className="text-4xl sm:text-5xl font-extrabold tracking-[-0.03em] text-foreground leading-[1.08]">
             db-modeling
           </h1>
 
           <p className="text-base sm:text-[17px] text-muted-foreground leading-relaxed max-w-md">
-            Synchronizes visual entity-relationship diagrams and DBML source files
-            at 120 FPS &mdash; pinpointing surgical syntax-tree edits in Rust without
-            touching your comments or formatting.
+            Visual relational database modeling powered by strict{" "}
+            <strong className="font-semibold text-foreground">DBML</strong> &mdash;
+            delivering a 1:1 workbench across a{" "}
+            <strong className="font-semibold text-foreground">Native Desktop App (GPUI)</strong>,{" "}
+            <strong className="font-semibold text-foreground">Interactive Web CLI</strong>, and{" "}
+            <strong className="font-semibold text-foreground">VS Code Extension</strong> from one shared Rust core.
           </p>
 
           <div
@@ -106,18 +62,20 @@ export function Hero() {
             <DownloadCTA />
 
             <Button asChild variant="outline" size="default">
-              <a href="#problem">How it works</a>
+              <a href="#architecture">How it works</a>
             </Button>
           </div>
         </div>
 
-        {/* Right Column: Inspector Window Card */}
+        {/* Right Column: Inspector Window Card (Real TextPatch from crates/dbml-wasm) */}
         <div className="lg:col-span-7 flex flex-col items-center">
           <div className="w-full rounded-md border border-border bg-card overflow-hidden">
             {/* Inspector Header Bar */}
             <div className="h-9 px-3.5 border-b border-border bg-muted/40 flex items-center justify-between">
               <span className="font-mono text-xs text-foreground font-medium">
-                {showRawDbml ? "exemplo.dbml (CST Span)" : "RowanCstMutation"}
+                {showRawDbml
+                  ? "crates/app/assets/sample.dbml"
+                  : "TextPatch · crates/dbml-wasm"}
               </span>
 
               <div className="flex items-center gap-1.5">
@@ -127,10 +85,10 @@ export function Hero() {
                   className="h-6 w-6 inline-flex items-center justify-center rounded text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
                   title={
                     showRawDbml
-                      ? "Switch to CST telemetry JSON"
-                      : "Switch to lossless DBML diff view"
+                      ? "Switch to TextPatch JSON"
+                      : "Switch to sample.dbml diff view"
                   }
-                  aria-label="Toggle between CST JSON and DBML patch view"
+                  aria-label="Toggle between TextPatch JSON and sample.dbml view"
                 >
                   {showRawDbml ? (
                     <Info className="w-3.5 h-3.5" />
@@ -143,7 +101,7 @@ export function Hero() {
                   type="button"
                   onClick={handleCopy}
                   className="h-6 w-6 inline-flex items-center justify-center rounded text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
-                  title="Copy payload"
+                  title="Copy TextPatch payload"
                   aria-label="Copy payload to clipboard"
                 >
                   {copied ? (
@@ -155,18 +113,91 @@ export function Hero() {
               </div>
             </div>
 
-            {/* Code Payload */}
+            {/* Code Payload: Real TextPatch struct from crates/dbml-wasm/src/types.rs */}
             {!showRawDbml ? (
               <pre className="p-4 sm:p-5 font-mono text-[11.5px] sm:text-xs leading-[1.65] overflow-x-auto tabular-nums text-foreground bg-card">
                 <code>
                   {"{\n"}
                   {"  "}
                   <span className="text-purple-700 dark:text-purple-400">
-                    &quot;document&quot;
+                    &quot;action&quot;
                   </span>
                   {": "}
                   <span className="text-emerald-700 dark:text-emerald-400">
-                    &quot;exemplo.dbml&quot;
+                    &quot;add_column&quot;
+                  </span>
+                  {",\n"}
+                  {"  "}
+                  <span className="text-purple-700 dark:text-purple-400">
+                    &quot;range&quot;
+                  </span>
+                  {": { "}
+                  <span className="text-purple-700 dark:text-purple-400">
+                    &quot;start&quot;
+                  </span>
+                  {": { "}
+                  <span className="text-purple-700 dark:text-purple-400">
+                    &quot;line&quot;
+                  </span>
+                  {": "}
+                  <span className="text-sky-700 dark:text-sky-400">20</span>
+                  {", "}
+                  <span className="text-purple-700 dark:text-purple-400">
+                    &quot;character&quot;
+                  </span>
+                  {": "}
+                  <span className="text-sky-700 dark:text-sky-400">19</span>
+                  {" } },\n"}
+                  {"  "}
+                  <span className="text-purple-700 dark:text-purple-400">
+                    &quot;byte_start&quot;
+                  </span>
+                  {": "}
+                  <span className="text-sky-700 dark:text-sky-400">342</span>
+                  {",\n"}
+                  {"  "}
+                  <span className="text-purple-700 dark:text-purple-400">
+                    &quot;byte_end&quot;
+                  </span>
+                  {": "}
+                  <span className="text-sky-700 dark:text-sky-400">342</span>
+                  {",\n"}
+                  {"  "}
+                  <span className="text-purple-700 dark:text-purple-400">
+                    &quot;new_text&quot;
+                  </span>
+                  {": "}
+                  <span className="text-emerald-700 dark:text-emerald-400">
+                    &quot;\n  discount_pct decimal(5,2)&quot;
+                  </span>
+                  {",\n"}
+                  {"  "}
+                  <span className="text-purple-700 dark:text-purple-400">
+                    &quot;created_column&quot;
+                  </span>
+                  {": ["}
+                  <span className="text-emerald-700 dark:text-emerald-400">
+                    &quot;orders&quot;
+                  </span>
+                  {", "}
+                  <span className="text-emerald-700 dark:text-emerald-400">
+                    &quot;discount_pct&quot;
+                  </span>
+                  {"],\n"}
+                  {"  "}
+                  <span className="text-purple-700 dark:text-purple-400">
+                    &quot;should_relayout&quot;
+                  </span>
+                  {": "}
+                  <span className="text-signal font-semibold">false</span>
+                  {",\n"}
+                  {"  "}
+                  <span className="text-purple-700 dark:text-purple-400">
+                    &quot;syntaxTree&quot;
+                  </span>
+                  {": "}
+                  <span className="text-emerald-700 dark:text-emerald-400">
+                    &quot;rowan::SyntaxNode (preserves_comments_and_formatting)&quot;
                   </span>
                   {",\n"}
                   {"  "}
@@ -175,96 +206,33 @@ export function Hero() {
                   </span>
                   {": "}
                   <span className="text-emerald-700 dark:text-emerald-400">
-                    &quot;exemplo.dbml.layout.json&quot;
+                    &quot;sample.dbml.layout.json (deterministic sorted keys)&quot;
                   </span>
                   {",\n"}
                   {"  "}
                   <span className="text-purple-700 dark:text-purple-400">
-                    &quot;mutationId&quot;
+                    &quot;targets&quot;
                   </span>
-                  {": "}
+                  {": ["}
                   <span className="text-emerald-700 dark:text-emerald-400">
-                    &quot;patch-orders-user-fk-091&quot;
+                    &quot;Desktop GPUI&quot;
                   </span>
-                  {",\n"}
-                  {"  "}
-                  <span className="text-purple-700 dark:text-purple-400">
-                    &quot;ByteSpan&quot;
-                  </span>
-                  {": "}
-                  <span className="text-sky-700 dark:text-sky-400">412..460</span>
-                  {",\n"}
-                  {"  "}
-                  <span className="text-purple-700 dark:text-purple-400">
-                    &quot;dbmlStatement&quot;
-                  </span>
-                  {": "}
+                  {", "}
                   <span className="text-emerald-700 dark:text-emerald-400">
-                    &quot;user_id int [ref: &gt; users.id, not null]&quot;
+                    &quot;CLI HTTP+WS&quot;
                   </span>
-                  {",\n"}
-                  {"  "}
-                  <span className="text-purple-700 dark:text-purple-400">
-                    &quot;status&quot;
-                  </span>
-                  {": "}
+                  {", "}
                   <span className="text-emerald-700 dark:text-emerald-400">
-                    &quot;LosslessPatchApplied&quot;
+                    &quot;VS Code VSIX&quot;
                   </span>
-                  {",\n"}
-                  {"  "}
-                  <span className="text-purple-700 dark:text-purple-400">
-                    &quot;preservedFormattingRatio&quot;
-                  </span>
-                  {": "}
-                  <span className="text-sky-700 dark:text-sky-400">1.00</span>
-                  {",\n"}
-                  {"  "}
-                  <span className="text-purple-700 dark:text-purple-400">
-                    &quot;cstParseLatencyMs&quot;
-                  </span>
-                  {": "}
-                  <span className="text-sky-700 dark:text-sky-400">0.84</span>
-                  {",\n"}
-                  {"  "}
-                  <span className="text-purple-700 dark:text-purple-400">
-                    &quot;gpuiFrameTimeMs&quot;
-                  </span>
-                  {": "}
-                  <span className="text-sky-700 dark:text-sky-400">8.21</span>
-                  {",\n"}
-                  {"  "}
-                  <span className="text-purple-700 dark:text-purple-400">
-                    &quot;fullAstRewrite&quot;
-                  </span>
-                  {": "}
-                  <span className="text-signal font-semibold">false</span>
-                  {",\n"}
-                  {"  "}
-                  <span className="text-purple-700 dark:text-purple-400">
-                    &quot;cstDiffSummary&quot;
-                  </span>
-                  {": "}
-                  <span className="text-emerald-700 dark:text-emerald-400">
-                    &quot;in-place token splice via crates/dbml-edit; 0 comments lost&quot;
-                  </span>
-                  {",\n"}
-                  {"  "}
-                  <span className="text-purple-700 dark:text-purple-400">
-                    &quot;committedAt&quot;
-                  </span>
-                  {": "}
-                  <span className="text-emerald-700 dark:text-emerald-400">
-                    &quot;2026-11-12T13:00:00Z&quot;
-                  </span>
-                  {"\n}"}
+                  {"]\n}"}
                 </code>
               </pre>
             ) : (
               <pre className="p-4 sm:p-5 font-mono text-[11.5px] sm:text-xs leading-[1.65] overflow-x-auto tabular-nums text-foreground bg-card">
                 <code>
                   <span className="text-muted-foreground">
-                    {"// All comments & blank lines survive canvas drags\n"}
+                    {"// Example: simple e-commerce (100% compatible with dbdiagram.io)\n"}
                   </span>
                   <span className="text-purple-700 dark:text-purple-400 font-semibold">
                     Table
@@ -277,36 +245,45 @@ export function Hero() {
                     [pk]
                   </span>
                   {"\n"}
-                  <span className="bg-signal-soft text-signal px-1 -mx-1 inline-block w-full">
-                    {"+ user_id int [ref: > users.id, not null]"}
+                  {"  user_id "}
+                  <span className="text-sky-700 dark:text-sky-400">int</span>{" "}
+                  <span className="text-emerald-700 dark:text-emerald-400">
+                    [ref: &gt; users.id, not null]
                   </span>
                   {"\n"}
                   {"  status "}
                   <span className="text-sky-700 dark:text-sky-400">
                     varchar(20)
                   </span>
-                  {" // preserved inline note\n"}
+                  {"\n"}
                   {"  placed_at "}
                   <span className="text-sky-700 dark:text-sky-400">
                     timestamp
                   </span>
-                  {"\n}\n\n"}
-                  <span className="text-muted-foreground">
-                    {"// Layout coordinates saved separately in:\n"}
-                    {"// exemplo.dbml.layout.json -> { \"orders\": { \"x\": 84, \"y\": 42 } }"}
+                  {"\n"}
+                  <span className="bg-signal-soft text-signal px-1 -mx-1 inline-block w-full">
+                    {"+ discount_pct decimal(5,2)"}
                   </span>
+                  {"\n}\n\n"}
+                  <span className="text-purple-700 dark:text-purple-400 font-semibold">
+                    TableGroup
+                  </span>{" "}
+                  <span className="text-foreground font-semibold">sales</span>{" "}
+                  <span className="text-muted-foreground">[color: #3b82f6]</span>{" "}
+                  {"{ orders · order_items }"}
                 </code>
               </pre>
             )}
           </div>
 
-          <p className="mt-3 text-xs text-muted-foreground bg-background/90 px-2 py-0.5">
-            What a lossless canvas edit emits. See the{" "}
+          <p className="mt-3 text-xs text-muted-foreground bg-background/90 px-2 py-0.5 rounded-sm">
+            What <code className="font-mono text-foreground">apply_command</code>{" "}
+            emits in Rust &amp; WebAssembly. See the{" "}
             <a
               href="#opensource"
               className="text-signal font-medium hover:underline"
             >
-              Rowan CST architecture
+              workspace crates
             </a>
             .
           </p>
