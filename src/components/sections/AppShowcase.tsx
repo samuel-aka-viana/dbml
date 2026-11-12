@@ -130,9 +130,15 @@ export function AppShowcase() {
         </div>
 
         {/* Workbench 4-Pane Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[460px]">
+        <div
+          className={`grid grid-cols-1 min-h-[500px] ${
+            showEditor
+              ? "lg:grid-cols-[175px_275px_minmax(0,1fr)_200px]"
+              : "lg:grid-cols-[185px_minmax(0,1fr)_215px]"
+          }`}
+        >
           {/* Pane 1: Schema Explorer Sidebar (TABLES & RELATIONS from canvas-claro.png) */}
-          <div className="lg:col-span-2 border-b lg:border-b-0 lg:border-r border-border bg-card/60 p-3 font-mono text-[11px] flex flex-col justify-between select-none">
+          <div className="border-b lg:border-b-0 lg:border-r border-border bg-card/60 p-3 font-mono text-[11px] flex flex-col justify-between select-none">
             <div className="space-y-4">
               {/* TABLES */}
               <div className="space-y-1.5">
@@ -261,7 +267,7 @@ export function AppShowcase() {
 
           {/* Pane 2: Collapsible Integrated DBML Editor (`Ctrl+E`) */}
           {showEditor && (
-            <div className="lg:col-span-3 border-b lg:border-b-0 lg:border-r border-border bg-card flex flex-col justify-between">
+            <div className="border-b lg:border-b-0 lg:border-r border-border bg-card flex flex-col justify-between min-w-0">
               <div>
                 <div className="h-8 px-3 border-b border-border bg-muted/30 flex items-center justify-between font-mono text-[11px]">
                   <span className="flex items-center gap-1.5 text-foreground font-medium">
@@ -297,7 +303,7 @@ export function AppShowcase() {
                     ))}
                   </div>
 
-                  <div className="pl-2.5 flex-1 space-y-0.5">
+                  <div className="pl-2.5 flex-1 space-y-0.5 whitespace-nowrap">
                     <div className="text-muted-foreground">
                       {"// Example: simple e-commerce"}
                     </div>
@@ -423,11 +429,7 @@ export function AppShowcase() {
           )}
 
           {/* Pane 3: Interactive Visual Canvas with Floating 6-Tool Pill & Orthogonal SVG Routing */}
-          <div
-            className={`${
-              showEditor ? "lg:col-span-5" : "lg:col-span-8"
-            } border-b lg:border-b-0 lg:border-r border-border bg-background radar-grid-bg flex flex-col justify-between p-3.5 relative select-none`}
-          >
+          <div className="border-b lg:border-b-0 lg:border-r border-border bg-background radar-grid-bg flex flex-col justify-between p-4 relative select-none min-w-0">
             {/* Floating 6-Tool Pill Toolbar (Exact match to docs/img/canvas-claro.png) */}
             <div className="mx-auto inline-flex items-center gap-1 px-2 py-1 rounded-lg border border-border bg-card">
               <button
@@ -501,28 +503,32 @@ export function AppShowcase() {
             </div>
 
             {/* Canvas Scene Geometry: GroupBoxes + Tables + Orthogonal Rounded Edges */}
-            <div className="my-4 relative">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 relative z-10">
+            <div className="my-5 relative">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 relative z-10">
                 {/* GroupBox 1: sales (#3b82f6) */}
                 <div
-                  className="p-2.5 rounded-lg border space-y-2"
+                  className="p-3 rounded-lg border space-y-2.5"
                   style={{
                     borderColor: "rgba(59, 130, 246, 0.45)",
                     backgroundColor: "rgba(59, 130, 246, 0.04)",
                   }}
                 >
-                  <div className="inline-flex items-center gap-1.5 px-1.5 py-0.5 rounded text-[10px] font-mono font-semibold text-blue-600 dark:text-blue-400 bg-blue-500/10">
+                  <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] font-mono font-semibold text-blue-600 dark:text-blue-400 bg-blue-500/10">
                     <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
                     <span>sales</span>
                     <span className="opacity-70">2</span>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-2">
+                  <div
+                    className={`grid gap-2.5 ${
+                      showEditor ? "grid-cols-1" : "grid-cols-1 xl:grid-cols-2"
+                    }`}
+                  >
                     {/* orders card */}
                     <button
                       type="button"
                       onClick={() => setSelectedTable("orders")}
-                      className={`text-left rounded border bg-card overflow-hidden font-mono text-[10px] transition-all ${
+                      className={`w-full text-left rounded border bg-card overflow-hidden font-mono text-[10.5px] transition-all ${
                         selectedTable === "orders"
                           ? "border-signal-strong ring-1 ring-signal-strong"
                           : "border-border hover:border-foreground/40"
@@ -532,32 +538,32 @@ export function AppShowcase() {
                         className="h-1 w-full"
                         style={{ backgroundColor: tableColors.orders }}
                       />
-                      <div className="p-1.5">
-                        <div className="flex items-center justify-between pb-1 mb-1 border-b border-border font-semibold text-foreground">
+                      <div className="p-2.5">
+                        <div className="flex items-center justify-between gap-2 pb-1.5 mb-1.5 border-b border-border font-semibold text-foreground">
                           <span>orders</span>
-                          <span className="text-[9px] text-muted-foreground">4</span>
+                          <span className="text-[9.5px] text-muted-foreground">4</span>
                         </div>
-                        <div className="space-y-0.5">
-                          <div className="flex justify-between">
-                            <span className="flex items-center gap-1 text-foreground">
-                              <Key className="w-2.5 h-2.5 text-amber-500" /> id
+                        <div className="space-y-1">
+                          <div className="flex items-center justify-between gap-3">
+                            <span className="flex items-center gap-1.5 text-foreground whitespace-nowrap">
+                              <Key className="w-2.5 h-2.5 text-amber-500 shrink-0" /> id
                             </span>
-                            <span className="text-muted-foreground">int</span>
+                            <span className="text-muted-foreground whitespace-nowrap shrink-0">int</span>
                           </div>
-                          <div className="flex justify-between">
-                            <span className="flex items-center gap-1 text-foreground">
-                              <Link2 className="w-2.5 h-2.5 text-sky-500" /> user_id
+                          <div className="flex items-center justify-between gap-3">
+                            <span className="flex items-center gap-1.5 text-foreground whitespace-nowrap">
+                              <Link2 className="w-2.5 h-2.5 text-sky-500 shrink-0" /> user_id
                             </span>
-                            <span className="text-muted-foreground">int NN</span>
+                            <span className="text-muted-foreground whitespace-nowrap shrink-0">int NN</span>
                           </div>
-                          <div className="flex justify-between text-muted-foreground">
-                            <span>status</span>
-                            <span>varchar</span>
+                          <div className="flex items-center justify-between gap-3 text-muted-foreground">
+                            <span className="whitespace-nowrap">status</span>
+                            <span className="whitespace-nowrap shrink-0">varchar</span>
                           </div>
                           {activePatch.table === "orders" && (
-                            <div className="flex justify-between bg-signal-soft text-signal px-1 -mx-1 font-semibold">
-                              <span>+{activePatch.colName}</span>
-                              <span>dec</span>
+                            <div className="flex items-center justify-between gap-2 bg-signal-soft text-signal px-1.5 py-0.5 -mx-1 rounded-sm font-semibold">
+                              <span className="truncate">+{activePatch.colName}</span>
+                              <span className="shrink-0">dec</span>
                             </div>
                           )}
                         </div>
@@ -568,7 +574,7 @@ export function AppShowcase() {
                     <button
                       type="button"
                       onClick={() => setSelectedTable("order_items")}
-                      className={`text-left rounded border bg-card overflow-hidden font-mono text-[10px] transition-all ${
+                      className={`w-full text-left rounded border bg-card overflow-hidden font-mono text-[10.5px] transition-all ${
                         selectedTable === "order_items"
                           ? "border-signal-strong ring-1 ring-signal-strong"
                           : "border-border hover:border-foreground/40"
@@ -578,33 +584,33 @@ export function AppShowcase() {
                         className="h-1 w-full"
                         style={{ backgroundColor: tableColors.order_items }}
                       />
-                      <div className="p-1.5">
-                        <div className="flex items-center justify-between pb-1 mb-1 border-b border-border font-semibold text-foreground">
+                      <div className="p-2.5">
+                        <div className="flex items-center justify-between gap-2 pb-1.5 mb-1.5 border-b border-border font-semibold text-foreground">
                           <span>order_items</span>
-                          <span className="text-[9px] text-muted-foreground">4</span>
+                          <span className="text-[9.5px] text-muted-foreground">4</span>
                         </div>
-                        <div className="space-y-0.5">
-                          <div className="flex justify-between">
-                            <span className="flex items-center gap-1 text-foreground">
-                              <Key className="w-2.5 h-2.5 text-amber-500" /> id
+                        <div className="space-y-1">
+                          <div className="flex items-center justify-between gap-3">
+                            <span className="flex items-center gap-1.5 text-foreground whitespace-nowrap">
+                              <Key className="w-2.5 h-2.5 text-amber-500 shrink-0" /> id
                             </span>
-                            <span className="text-muted-foreground">int</span>
+                            <span className="text-muted-foreground whitespace-nowrap shrink-0">int</span>
                           </div>
-                          <div className="flex justify-between">
-                            <span className="flex items-center gap-1 text-foreground">
-                              <Link2 className="w-2.5 h-2.5 text-sky-500" /> order_id
+                          <div className="flex items-center justify-between gap-3">
+                            <span className="flex items-center gap-1.5 text-foreground whitespace-nowrap">
+                              <Link2 className="w-2.5 h-2.5 text-sky-500 shrink-0" /> order_id
                             </span>
-                            <span className="text-muted-foreground">int N:1</span>
+                            <span className="text-muted-foreground whitespace-nowrap shrink-0">int N:1</span>
                           </div>
-                          <div className="flex justify-between">
-                            <span className="flex items-center gap-1 text-foreground">
-                              <Link2 className="w-2.5 h-2.5 text-sky-500" /> product_id
+                          <div className="flex items-center justify-between gap-3">
+                            <span className="flex items-center gap-1.5 text-foreground whitespace-nowrap">
+                              <Link2 className="w-2.5 h-2.5 text-sky-500 shrink-0" /> product_id
                             </span>
-                            <span className="text-muted-foreground">int N:1</span>
+                            <span className="text-muted-foreground whitespace-nowrap shrink-0">int N:1</span>
                           </div>
-                          <div className="flex justify-between text-muted-foreground">
-                            <span>quantity</span>
-                            <span>int</span>
+                          <div className="flex items-center justify-between gap-3 text-muted-foreground">
+                            <span className="whitespace-nowrap">quantity</span>
+                            <span className="whitespace-nowrap shrink-0">int</span>
                           </div>
                         </div>
                       </div>
@@ -614,24 +620,28 @@ export function AppShowcase() {
 
                 {/* GroupBox 2: catalog (#22c55e) */}
                 <div
-                  className="p-2.5 rounded-lg border space-y-2"
+                  className="p-3 rounded-lg border space-y-2.5"
                   style={{
                     borderColor: "rgba(34, 197, 94, 0.45)",
                     backgroundColor: "rgba(34, 197, 94, 0.04)",
                   }}
                 >
-                  <div className="inline-flex items-center gap-1.5 px-1.5 py-0.5 rounded text-[10px] font-mono font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10">
+                  <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] font-mono font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                     <span>catalog</span>
                     <span className="opacity-70">2</span>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-2">
+                  <div
+                    className={`grid gap-2.5 ${
+                      showEditor ? "grid-cols-1" : "grid-cols-1 xl:grid-cols-2"
+                    }`}
+                  >
                     {/* products card */}
                     <button
                       type="button"
                       onClick={() => setSelectedTable("products")}
-                      className={`text-left rounded border bg-card overflow-hidden font-mono text-[10px] transition-all ${
+                      className={`w-full text-left rounded border bg-card overflow-hidden font-mono text-[10.5px] transition-all ${
                         selectedTable === "products"
                           ? "border-signal-strong ring-1 ring-signal-strong"
                           : "border-border hover:border-foreground/40"
@@ -641,29 +651,29 @@ export function AppShowcase() {
                         className="h-1 w-full"
                         style={{ backgroundColor: tableColors.products }}
                       />
-                      <div className="p-1.5">
-                        <div className="flex items-center justify-between pb-1 mb-1 border-b border-border font-semibold text-foreground">
+                      <div className="p-2.5">
+                        <div className="flex items-center justify-between gap-2 pb-1.5 mb-1.5 border-b border-border font-semibold text-foreground">
                           <span>products</span>
-                          <span className="text-[9px] text-muted-foreground">4</span>
+                          <span className="text-[9.5px] text-muted-foreground">4</span>
                         </div>
-                        <div className="space-y-0.5">
-                          <div className="flex justify-between">
-                            <span className="flex items-center gap-1 text-foreground">
-                              <Key className="w-2.5 h-2.5 text-amber-500" /> id
+                        <div className="space-y-1">
+                          <div className="flex items-center justify-between gap-3">
+                            <span className="flex items-center gap-1.5 text-foreground whitespace-nowrap">
+                              <Key className="w-2.5 h-2.5 text-amber-500 shrink-0" /> id
                             </span>
-                            <span className="text-muted-foreground">int</span>
+                            <span className="text-muted-foreground whitespace-nowrap shrink-0">int</span>
                           </div>
-                          <div className="flex justify-between text-foreground">
-                            <span>title</span>
-                            <span className="text-muted-foreground">varchar NN</span>
+                          <div className="flex items-center justify-between gap-3 text-foreground">
+                            <span className="whitespace-nowrap">title</span>
+                            <span className="text-muted-foreground whitespace-nowrap shrink-0">varchar NN</span>
                           </div>
-                          <div className="flex justify-between text-muted-foreground">
-                            <span>price</span>
-                            <span>decimal</span>
+                          <div className="flex items-center justify-between gap-3 text-muted-foreground">
+                            <span className="whitespace-nowrap">price</span>
+                            <span className="whitespace-nowrap shrink-0">decimal</span>
                           </div>
-                          <div className="flex justify-between text-muted-foreground">
-                            <span>stock</span>
-                            <span>int</span>
+                          <div className="flex items-center justify-between gap-3 text-muted-foreground">
+                            <span className="whitespace-nowrap">stock</span>
+                            <span className="whitespace-nowrap shrink-0">int</span>
                           </div>
                         </div>
                       </div>
@@ -673,7 +683,7 @@ export function AppShowcase() {
                     <button
                       type="button"
                       onClick={() => setSelectedTable("reviews")}
-                      className={`text-left rounded border bg-card overflow-hidden font-mono text-[10px] transition-all ${
+                      className={`w-full text-left rounded border bg-card overflow-hidden font-mono text-[10.5px] transition-all ${
                         selectedTable === "reviews"
                           ? "border-signal-strong ring-1 ring-signal-strong"
                           : "border-border hover:border-foreground/40"
@@ -683,34 +693,34 @@ export function AppShowcase() {
                         className="h-1 w-full"
                         style={{ backgroundColor: tableColors.reviews }}
                       />
-                      <div className="p-1.5">
-                        <div className="flex items-center justify-between pb-1 mb-1 border-b border-border font-semibold text-foreground">
+                      <div className="p-2.5">
+                        <div className="flex items-center justify-between gap-2 pb-1.5 mb-1.5 border-b border-border font-semibold text-foreground">
                           <span>reviews</span>
-                          <span className="text-[9px] text-muted-foreground">4</span>
+                          <span className="text-[9.5px] text-muted-foreground">4</span>
                         </div>
-                        <div className="space-y-0.5">
-                          <div className="flex justify-between">
-                            <span className="flex items-center gap-1 text-foreground">
-                              <Key className="w-2.5 h-2.5 text-amber-500" /> id
+                        <div className="space-y-1">
+                          <div className="flex items-center justify-between gap-3">
+                            <span className="flex items-center gap-1.5 text-foreground whitespace-nowrap">
+                              <Key className="w-2.5 h-2.5 text-amber-500 shrink-0" /> id
                             </span>
-                            <span className="text-muted-foreground">int</span>
+                            <span className="text-muted-foreground whitespace-nowrap shrink-0">int</span>
                           </div>
-                          <div className="flex justify-between">
-                            <span className="flex items-center gap-1 text-foreground">
-                              <Link2 className="w-2.5 h-2.5 text-sky-500" /> product_id
+                          <div className="flex items-center justify-between gap-3">
+                            <span className="flex items-center gap-1.5 text-foreground whitespace-nowrap">
+                              <Link2 className="w-2.5 h-2.5 text-sky-500 shrink-0" /> product_id
                             </span>
-                            <span className="text-muted-foreground">int N:1</span>
+                            <span className="text-muted-foreground whitespace-nowrap shrink-0">int N:1</span>
                           </div>
-                          <div className="flex justify-between">
-                            <span className="flex items-center gap-1 text-foreground">
-                              <Link2 className="w-2.5 h-2.5 text-sky-500" /> user_id
+                          <div className="flex items-center justify-between gap-3">
+                            <span className="flex items-center gap-1.5 text-foreground whitespace-nowrap">
+                              <Link2 className="w-2.5 h-2.5 text-sky-500 shrink-0" /> user_id
                             </span>
-                            <span className="text-muted-foreground">int N:1</span>
+                            <span className="text-muted-foreground whitespace-nowrap shrink-0">int N:1</span>
                           </div>
                           {activePatch.table === "reviews" && (
-                            <div className="flex justify-between bg-signal-soft text-signal px-1 -mx-1 font-semibold">
-                              <span>+{activePatch.colName}</span>
-                              <span>FK</span>
+                            <div className="flex items-center justify-between gap-2 bg-signal-soft text-signal px-1.5 py-0.5 -mx-1 rounded-sm font-semibold">
+                              <span className="truncate">+{activePatch.colName}</span>
+                              <span className="shrink-0">FK</span>
                             </div>
                           )}
                         </div>
@@ -721,11 +731,11 @@ export function AppShowcase() {
               </div>
 
               {/* Bottom Row: Ungrouped `users` table (#8b5cf6) + Orthogonal Route Preview */}
-              <div className="mt-3 flex flex-wrap items-center justify-between gap-3 relative z-10">
+              <div className="mt-3.5 flex flex-wrap items-center justify-between gap-3 relative z-10">
                 <button
                   type="button"
                   onClick={() => setSelectedTable("users")}
-                  className={`w-full sm:w-52 text-left rounded border bg-card overflow-hidden font-mono text-[10px] transition-all ${
+                  className={`w-full sm:w-56 text-left rounded border bg-card overflow-hidden font-mono text-[10.5px] transition-all ${
                     selectedTable === "users"
                       ? "border-signal-strong ring-1 ring-signal-strong"
                       : "border-border hover:border-foreground/40"
@@ -735,33 +745,33 @@ export function AppShowcase() {
                     className="h-1.5 w-full"
                     style={{ backgroundColor: tableColors.users }}
                   />
-                  <div className="p-2">
-                    <div className="flex items-center justify-between pb-1 mb-1 border-b border-border font-semibold text-foreground">
+                  <div className="p-2.5">
+                    <div className="flex items-center justify-between gap-2 pb-1.5 mb-1.5 border-b border-border font-semibold text-foreground">
                       <span>users</span>
-                      <span className="text-[9px] text-muted-foreground">1:N</span>
+                      <span className="text-[9.5px] text-muted-foreground">1:N</span>
                     </div>
-                    <div className="space-y-0.5">
-                      <div className="flex justify-between">
-                        <span className="flex items-center gap-1 text-foreground">
-                          <Key className="w-2.5 h-2.5 text-amber-500" /> id
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="flex items-center gap-1.5 text-foreground whitespace-nowrap">
+                          <Key className="w-2.5 h-2.5 text-amber-500 shrink-0" /> id
                         </span>
-                        <span className="text-muted-foreground">int [pk]</span>
+                        <span className="text-muted-foreground whitespace-nowrap shrink-0">int [pk]</span>
                       </div>
-                      <div className="flex justify-between text-foreground">
-                        <span>email</span>
-                        <span className="text-muted-foreground">varchar NN</span>
+                      <div className="flex items-center justify-between gap-3 text-foreground">
+                        <span className="whitespace-nowrap">email</span>
+                        <span className="text-muted-foreground whitespace-nowrap shrink-0">varchar NN</span>
                       </div>
                       {activePatch.table === "users" && (
-                        <div className="flex justify-between bg-signal-soft text-signal px-1 -mx-1 font-semibold">
-                          <span>+{activePatch.colName}</span>
-                          <span>varchar</span>
+                        <div className="flex items-center justify-between gap-2 bg-signal-soft text-signal px-1.5 py-0.5 -mx-1 rounded-sm font-semibold">
+                          <span className="truncate">+{activePatch.colName}</span>
+                          <span className="shrink-0">varchar</span>
                         </div>
                       )}
                     </div>
                   </div>
                 </button>
 
-                <div className="font-mono text-[10px] text-muted-foreground bg-card/90 border border-border px-2.5 py-1.5 rounded">
+                <div className="font-mono text-[10px] text-muted-foreground bg-card/90 border border-border px-3 py-2 rounded">
                   <div>Sugiyama + layout::route (r = 8.0px)</div>
                   <div className="text-foreground">
                     1:1 across Desktop, Web CLI &amp; VS Code
@@ -796,7 +806,7 @@ export function AppShowcase() {
           </div>
 
           {/* Pane 4: Right Inspector Panel (`Ctrl+I` — Table Color Palette & Shortcuts) */}
-          <div className="lg:col-span-2 bg-card/60 p-3 font-mono text-[11px] flex flex-col justify-between">
+          <div className="bg-card/60 p-3 font-mono text-[11px] flex flex-col justify-between min-w-0">
             {selectedTable ? (
               <div className="space-y-4">
                 <div className="flex items-center justify-between border-b border-border pb-2">
